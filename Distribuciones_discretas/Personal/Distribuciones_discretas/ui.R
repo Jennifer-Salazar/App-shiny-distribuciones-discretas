@@ -35,17 +35,17 @@ shinyUI(fluidPage(
             conditionalPanel(condition="input.Distribucion=='Hipergeometrica'",
                              numericInput(inputId="k",
                                           label="Ingrese el número de elementos que tienen la 
-                                          caracteristica de intéres",
+                                          caracteristica de intéres (k)",
                                           value="10",
                                           step=1),
                              
                              numericInput(inputId="N",
-                                          label="Ingrese el tamaño de la población",
-                                          value="30", 
+                                          label="Ingrese el tamaño de la población (N)",
+                                          value="25", 
                                           step=1),
                              
                              numericInput(inputId="n",
-                                          label="Ingrese el tamaño de muestra",
+                                          label="Ingrese el tamaño de muestra (n)",
                                           value="5",
                                           step=1)),
             
@@ -76,7 +76,7 @@ shinyUI(fluidPage(
             
             img(src="Nacional.png", height = 56, width = 140),
             br(),
-            p("App creada por el Semillero de R de la Universidad Nacional de Colombia:"),
+            p("App creada por Jennifer Salazar Galvis y Miguel Angel Londoño Ciceros"),
             tags$a(href="https://srunal.github.io", "https://srunal.github.io")
             
         ),

@@ -23,11 +23,11 @@ shinyServer(function(input, output, session){
         return(resultado)
     }
     
-    hipergeometrica <- function(x, K, N, n, acumulada = FALSE){
+    hipergeometrica <- function(x, k, N, n, acumulada = FALSE){
         if(acumulada == FALSE){
-            resultado <- phyper(x, K, N-K, n)- phyper(x-1, K, N-K, n)
+            resultado <- phyper(q=x, m=k, n=N-k, k=n)- phyper(q=x-1, m=k, n=N-k, k=n)
         }else{
-            resultado <- phyper(x, K, N-K, n)
+            resultado <- phyper(q=x, m=k, n=N-k, k=n)
         }
         return(resultado)
     }
@@ -114,151 +114,130 @@ shinyServer(function(input, output, session){
                 
             }}
         
-        # #----------------------------- t-student ---------------------------------
-        # 
-        # if(input$Distribucion == "t-student"){
-        #     
-        #     
-        #     if(input$Propede == "Percentil"){
-        #         df=input$grados
-        #         proba <- input$Probabilidad
-        #         percentil <- qt(p=proba, df=df, lower.tail=F)
-        #         
-        #         curve(dt(x, df), xlim=c(-5,5), lwd=3,
-        #               main='Distribución t-student', ylab="", xlab="", 
-        #               axes=FALSE)
-        #         axis(1, at=seq(-5, 5, by=0.5), pos=0)
-        #         axis(2, las=1)
-        #         secuencia <- seq(percentil, 5, length.out=10000)
-        #         cord.x <- c(percentil, secuencia, 5)
-        #         cord.y <- c(0, dt(secuencia, df=df), 0)
-        #         polygon(cord.x, cord.y, col='darkolivegreen3')
-        #         shadowtext(x=percentil, y=0.01, round(percentil, 2), 
-        #                    col="chartreuse", cex=2)
-        #         title(sub=bquote(P(t>.(percentil))==.(proba)), cex.sub=2)
-        #         
-        #         output$perce <- renderText(percentil)
-        #     }
-        #     
-        #     else {
-        #         df=input$grados
-        #         percentil=input$Percentil
-        #         proba <- pt(q=percentil, df=df, lower.tail=F)
-        #         
-        #         curve(dt(x, df), xlim=c(-5,5), lwd=3,
-        #               main='Distribución t-student', ylab="", xlab="", 
-        #               axes=FALSE)
-        #         axis(1, at=seq(-5, 5, by=0.5), pos=0)
-        #         axis(2, las=1)
-        #         secuencia <- seq(percentil, 5, length.out=10000)
-        #         cord.x <- c(percentil, secuencia, 5)
-        #         cord.y <- c(0, dt(secuencia, df=df), 0)
-        #         polygon(cord.x, cord.y, col='darkolivegreen3')
-        #         altura <- dt(x=percentil, df=df)
-        #         shadowtext(x=percentil, y=altura/2, round(proba, 2), 
-        #                    col="orchid2", cex=2)
-        #         title(sub=bquote(P(t>.(percentil))==.(proba)), cex.sub=2)
-        #         
-        #     }
-        #     
-        # }
-        # 
-        # #-----------------------------   F    ---------------------------------
-        # 
-        # if(input$Distribucion == "F"){
-        #     
-        #     
-        #     if(input$Propede == "Percentil"){
-        #         
-        #         proba <- input$Probabilidad
-        #         df1=input$grados1
-        #         df2=input$grados2
-        #         percentil <- qf(p=proba, df1, df2, lower.tail=F)
-        #         
-        #         max.x <- 3 * percentil
-        #         curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
-        #               main='Distribución F', ylab="", xlab="", axes=FALSE)
-        #         axis(1, at=seq(0, max.x, by=0.5), pos=0)
-        #         axis(2, las=1)
-        #         secuencia <- seq(percentil, max.x, length.out=10000)
-        #         cord.x <- c(percentil, secuencia, max.x)
-        #         cord.y <- c(0, df(secuencia, df1, df2), 0)
-        #         polygon(cord.x, cord.y, col='lightsalmon3')
-        #         shadowtext(x=percentil, y=0.01, round(percentil, 2), 
-        #                    col="chartreuse", cex=2)
-        #         title(sub=bquote(P(F>.(percentil))==.(proba)), cex.sub=2)
-        #         
-        #     }
-        #     
-        #     else {
-        #         df1=input$grados1
-        #         df2=input$grados2
-        #         percentil=input$Percentil
-        #         proba <- pf(q=percentil, df1, df2, lower.tail=F)
-        #         
-        #         max.x <- 3 * percentil
-        #         curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
-        #               main='Distribución F', ylab="", xlab="", axes=FALSE)
-        #         axis(1, at=seq(0, max.x, by=0.5), pos=0)
-        #         axis(2, las=1)
-        #         secuencia <- seq(percentil, max.x, length.out=10000)
-        #         cord.x <- c(percentil, secuencia, max.x)
-        #         cord.y <- c(0, df(secuencia, df1, df2), 0)
-        #         polygon(cord.x, cord.y, col='lightsalmon3')
-        #         altura <- df(x=percentil, df1, df2)
-        #         shadowtext(x=percentil, y=altura/2, round(proba, 2), 
-        #                    col="orchid2", cex=2)
-        #         title(sub=bquote(P(F>.(percentil))==.(proba)), cex.sub=2)
-        #         
-        #         
-        #     }}
-        # 
-        # #-----------------------------   chi    ---------------------------------
-        # 
-        # if(input$Distribucion == "chi.cuadrada"){
-        #     
-        #     
-        #     if(input$Propede == "Percentil"){
-        #         proba <- input$Probabilidad
-        #         df=input$Grados
-        #         percentil <- qchisq(p=proba, df, lower.tail=F)
-        #         
-        #         max.x <- qchisq(p=0.99, df)
-        #         curve(dchisq(x, df), xlim=c(0, max.x), lwd=3,
-        #               main=expression('Distribución' ~ chi^2), ylab="", xlab="", axes=FALSE)
-        #         axis(1, at=seq(0, max.x, by=0.5), pos=0)
-        #         axis(2, las=1)
-        #         secuencia <- seq(percentil, max.x, length.out=10000)
-        #         cord.x <- c(percentil, secuencia, max.x)
-        #         cord.y <- c(0, dchisq(secuencia, df), 0)
-        #         polygon(cord.x, cord.y, col='yellow3')
-        #         shadowtext(x=percentil, y=0, round(percentil, 2), 
-        #                    col="chartreuse", cex=2)
-        #         title(sub=bquote(P(chi^2>.(percentil))==.(proba)), cex.sub=2)
-        #         
-        #         
-        #     }
-        #     else {
-        #         
-        #         df=input$Grados
-        #         percentil=input$Percentil
-        #         proba <- pchisq(q=percentil, df, lower.tail=F)
-        #         
-        #         max.x <- qchisq(p=0.99, df)
-        #         curve(dchisq(x, df), xlim=c(0, max.x), lwd=3,
-        #               main=expression('Distribución' ~ chi^2), ylab="", xlab="", axes=FALSE)
-        #         axis(1, at=seq(0, max.x, by=0.5), pos=0)
-        #         axis(2, las=1)
-        #         secuencia <- seq(percentil, max.x, length.out=10000)
-        #         cord.x <- c(percentil, secuencia, max.x)
-        #         cord.y <- c(0, dchisq(secuencia, df), 0)
-        #         polygon(cord.x, cord.y, col='yellow3')
-        #         altura <- dchisq(x=percentil, df)
-        #         shadowtext(x=percentil, y=altura/2, round(proba, 2), 
-        #                    col="orchid2", cex=2)
-        #         title(sub=bquote(P(chi^2>.(percentil))==.(proba)), cex.sub=2)
-        #         
-        #         
-        #     }}
+        # #----------------------------- Poisson ---------------------------------
+
+        if(input$Distribucion == "Poisson"){
+            lambda <- input$lambda
+
+
+            if(input$Propede == "Percentil"){
+                probabilidad <- input$Probabilidad
+                
+
+                # curve(dt(x, df), xlim=c(-5,5), lwd=3,
+                #       main='Distribución t-student', ylab="", xlab="",
+                #       axes=FALSE)
+                # axis(1, at=seq(-5, 5, by=0.5), pos=0)
+                # axis(2, las=1)
+                # secuencia <- seq(percentil, 5, length.out=10000)
+                # cord.x <- c(percentil, secuencia, 5)
+                # cord.y <- c(0, dt(secuencia, df=df), 0)
+                # polygon(cord.x, cord.y, col='darkolivegreen3')
+                # shadowtext(x=percentil, y=0.01, round(percentil, 2),
+                #            col="chartreuse", cex=2)
+                # title(sub=bquote(P(t>.(percentil))==.(proba)), cex.sub=2)
+                # 
+                # output$perce <- renderText(percentil)
+            }
+
+            else {
+                
+                percentil <- input$Percentil
+                
+                
+                if(input$Acumulado == "acumulada"){
+                    acumulada = TRUE
+                }else{
+                    acumulada = FALSE
+                }
+                
+                probabilidad <- poisson(num = percentil, lambda = lambda, acumulada = acumulada)
+                
+
+                # curve(dt(x, df), xlim=c(-5,5), lwd=3,
+                #       main='Distribución t-student', ylab="", xlab="",
+                #       axes=FALSE)
+                # axis(1, at=seq(-5, 5, by=0.5), pos=0)
+                # axis(2, las=1)
+                # secuencia <- seq(percentil, 5, length.out=10000)
+                # cord.x <- c(percentil, secuencia, 5)
+                # cord.y <- c(0, dt(secuencia, df=df), 0)
+                # polygon(cord.x, cord.y, col='darkolivegreen3')
+                # altura <- dt(x=percentil, df=df)
+                # shadowtext(x=percentil, y=altura/2, round(proba, 2),
+                #            col="orchid2", cex=2)
+                # title(sub=bquote(P(t>.(percentil))==.(proba)), cex.sub=2)
+                
+                if(acumulada){
+                    title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                }else{
+                    title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
+                }
+
+            }
+
+        }
+
+        # #------------------------- Hipergeometrica  ---------------------------------
+
+        if(input$Distribucion == "Hipergeometrica"){
+            k <- as.integer(input$k)
+            N <- as.integer(input$N)
+            n <- as.integer(input$n)
+
+            if(input$Propede == "Percentil"){
+                
+                probabilidad <- input$Probabilidad
+
+                # max.x <- 3 * percentil
+                # curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
+                #       main='Distribución F', ylab="", xlab="", axes=FALSE)
+                # axis(1, at=seq(0, max.x, by=0.5), pos=0)
+                # axis(2, las=1)
+                # secuencia <- seq(percentil, max.x, length.out=10000)
+                # cord.x <- c(percentil, secuencia, max.x)
+                # cord.y <- c(0, df(secuencia, df1, df2), 0)
+                # polygon(cord.x, cord.y, col='lightsalmon3')
+                # shadowtext(x=percentil, y=0.01, round(percentil, 2),
+                #            col="chartreuse", cex=2)
+                # title(sub=bquote(P(F>.(percentil))==.(proba)), cex.sub=2)
+
+            }else{
+                
+                percentil <- input$Percentil
+                
+                
+                if(input$Acumulado == "acumulada"){
+                    acumulada = TRUE
+                }else{
+                    acumulada = FALSE
+                }
+                
+                probabilidad <- hipergeometrica(x=percentil, k=k, N=N, n=n, acumulada = acumulada)
+   
+
+                # max.x <- 3 * percentil
+                # curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
+                #       main='Distribución F', ylab="", xlab="", axes=FALSE)
+                # axis(1, at=seq(0, max.x, by=0.5), pos=0)
+                # axis(2, las=1)
+                # secuencia <- seq(percentil, max.x, length.out=10000)
+                # cord.x <- c(percentil, secuencia, max.x)
+                # cord.y <- c(0, df(secuencia, df1, df2), 0)
+                # polygon(cord.x, cord.y, col='lightsalmon3')
+                # altura <- df(x=percentil, df1, df2)
+                # shadowtext(x=percentil, y=altura/2, round(proba, 2),
+                #            col="orchid2", cex=2)
+                # title(sub=bquote(P(F>.(percentil))==.(proba)), cex.sub=2)
+                
+                if(acumulada){
+                    title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                }else{
+                    title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
+                }
+
+
+            }}
+
     })
 })
