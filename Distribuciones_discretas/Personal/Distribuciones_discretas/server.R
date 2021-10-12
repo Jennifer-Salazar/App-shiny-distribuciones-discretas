@@ -5,26 +5,9 @@ shinyServer(function(input, output, session){
     
     # ------------- Funciones para el calculo de probabilidades --------
     
-    binomial <- function(num, size, prob, acumulada = FALSE){
-        if(acumulada == FALSE){
-            resultado <- pbinom(num, size=size, prob=prob)-pbinom(num-1, size=size, prob = prob)
-        }else{
-            resultado <- pbinom(num, size=size, prob=prob)
-        }
-        return(resultado)
-    }
-    
-    poisson <- function(num, lambda, acumulada = FALSE){
-        if(acumulada == FALSE){
-            resultado <- ppois(num, lambda = lambda)-ppois(num-1, lambda=lambda)
-        }else{
-            resultado <- ppois(num, lambda = lambda)
-        }
-        return(resultado)
-    }
     
     hipergeometrica <- function(x, k, N, n, acumulada = FALSE){
-        if(acumulada == FALSE){
+        if(acumulada == FALSE & x!=0){
             resultado <- phyper(q=x, m=k, n=N-k, k=n)- phyper(q=x-1, m=k, n=N-k, k=n)
         }else{
             resultado <- phyper(q=x, m=k, n=N-k, k=n)
@@ -82,32 +65,21 @@ shinyServer(function(input, output, session){
                 
                 
                 if(input$Acumulado == "acumulada"){
-                    acumulada = TRUE
-                }else{
-                    acumulada = FALSE
-                }
-                
-                probabilidad <- binomial(num = percentil, size = n, prob = p, acumulada = acumulada)
-                
-                
-                # k <- 5  # numero de desviaciones
-                # curve(dnorm(x, media, desvi), xlim=media+c(-k,k)*desvi, lwd=3,
-                #       main='Distribución normal', ylab="", xlab="", axes=FALSE)
-                # axis(1, at=seq(media-k*desvi, media+k*desvi, desvi), pos=0)
-                # axis(2, las=1)
-                # if (percentil > media-k*desvi) {
-                #     secuencia <- seq(media-k*desvi, percentil, length.out=10000)
-                #     cord.x <- c(media-k*desvi, secuencia, percentil)
-                #     cord.y <- c(0, dnorm(secuencia, media, desvi), 0)
-                #     polygon(cord.x, cord.y, col='steelblue')
-                #     altura <- dnorm(percentil, media, desvi)
-                #     shadowtext(x=percentil, y=altura/2, round(proba, 2), 
-                #                col="orchid2", cex=2)
-                # }
-                
-                if(acumulada){
+                    probabilidad <- pbinom(percentil, size = n, prob = p)
+                    prob <- pbinom(0:percentil, size=n, prob=p)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
+                            xlab=" ", ylab=expression(P(X<=x)), col="deepskyblue3", las=1)
+                    grid()
+                    
                     title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                    
                 }else{
+                    probabilidad <- dbinom(percentil, size = n, prob = p)
+                    
+                    prob <- dbinom(x=0:n, size=n, prob=p)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                            xlab=" ", ylab=expression(P(X==x)), col="deepskyblue3", las=1)
+                    grid()
                     title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
                 }
                 
@@ -146,33 +118,27 @@ shinyServer(function(input, output, session){
                 
                 
                 if(input$Acumulado == "acumulada"){
-                    acumulada = TRUE
-                }else{
-                    acumulada = FALSE
-                }
-                
-                probabilidad <- poisson(num = percentil, lambda = lambda, acumulada = acumulada)
-                
-
-                # curve(dt(x, df), xlim=c(-5,5), lwd=3,
-                #       main='Distribución t-student', ylab="", xlab="",
-                #       axes=FALSE)
-                # axis(1, at=seq(-5, 5, by=0.5), pos=0)
-                # axis(2, las=1)
-                # secuencia <- seq(percentil, 5, length.out=10000)
-                # cord.x <- c(percentil, secuencia, 5)
-                # cord.y <- c(0, dt(secuencia, df=df), 0)
-                # polygon(cord.x, cord.y, col='darkolivegreen3')
-                # altura <- dt(x=percentil, df=df)
-                # shadowtext(x=percentil, y=altura/2, round(proba, 2),
-                #            col="orchid2", cex=2)
-                # title(sub=bquote(P(t>.(percentil))==.(proba)), cex.sub=2)
-                
-                if(acumulada){
+                    probabilidad <- ppois(percentil, lambda)
+                    
+                    prob <- ppois(0:percentil, lambda=lambda)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
+                            xlab="", ylab=expression(P(X<=x)), col="deepskyblue3", las=1)
+                    grid()
+                    
                     title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                    
+                    
                 }else{
+                    probabilidad <- dpois(percentil, lambda)
+                    prob <- dpois(x=0:input$n_poisson, lambda=lambda)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:input$n_poisson,
+                            xlab="x", ylab=expression(P(X==x)), col="deepskyblue3", las=1)
+                    grid()
+                    
                     title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
                 }
+                
+                
 
             }
 

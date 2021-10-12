@@ -29,7 +29,13 @@ shinyUI(fluidPage(
                                           label="Ingrese la media",
                                           min=0,
                                           step=1,
-                                          value="5")),
+                                          value="5"),
+                             numericInput(inputId = "n_poisson",
+                                          label = "Ingrese el máximo valor de x para el cual desea ver las probabilidades:",
+                                          min = 1,
+                                          max = 500,
+                                          value = 20,
+                                          step= 1)),
             
             
             conditionalPanel(condition="input.Distribucion=='Hipergeometrica'",
@@ -65,7 +71,7 @@ shinyUI(fluidPage(
                              
                              numericInput(inputId="Percentil",
                                           label="Ingrese percentil",
-                                          value=2, step=1)),
+                                          value=5, step=1)),
             
             
             conditionalPanel(condition="input.Propede=='Percentil'",
