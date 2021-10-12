@@ -55,7 +55,7 @@ shinyServer(function(input, output, session){
         #----------------------------- Binomial  ---------------------------------
         
         if(input$Distribucion == "Binomial"){
-            n <- input$n
+            n <- input$n_binomial
             p <- input$p
             
             if(input$Propede == "Percentil"){
@@ -183,7 +183,8 @@ shinyServer(function(input, output, session){
         if(input$Distribucion == "Hipergeometrica"){
             k <- as.integer(input$k)
             N <- as.integer(input$N)
-            n <- as.integer(input$n)
+            n <- as.integer(input$n_hipergeometrica)
+            
 
             if(input$Propede == "Percentil"){
                 
@@ -214,7 +215,7 @@ shinyServer(function(input, output, session){
                 }
                 
                 probabilidad <- hipergeometrica(x=percentil, k=k, N=N, n=n, acumulada = acumulada)
-   
+                
 
                 # max.x <- 3 * percentil
                 # curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,

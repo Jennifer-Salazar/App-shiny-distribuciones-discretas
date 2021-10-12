@@ -12,7 +12,7 @@ shinyUI(fluidPage(
             
             
             conditionalPanel(condition="input.Distribucion=='Binomial'",
-                             numericInput(inputId="n",
+                             numericInput(inputId="n_binomial",
                                           label=HTML("Ingrese el tamaño de muestra"),
                                           min = 1,
                                           value="30",
@@ -44,7 +44,7 @@ shinyUI(fluidPage(
                                           value="25", 
                                           step=1),
                              
-                             numericInput(inputId="n",
+                             numericInput(inputId="n_hipergeometrica",
                                           label="Ingrese el tamaño de muestra (n)",
                                           value="5",
                                           step=1)),
