@@ -82,8 +82,7 @@ shinyUI(fluidPage(
             
             img(src="Nacional.png", height = 56, width = 140),
             br(),
-            p("App creada por Jennifer Salazar Galvis y Miguel Angel Londoño Ciceros"),
-            tags$a(href="https://srunal.github.io", "https://srunal.github.io")
+            p("App creada por Jennifer Salazar Galvis y Miguel Angel Londoño Ciceros")
             
         ),
         

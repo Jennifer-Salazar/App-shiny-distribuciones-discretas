@@ -2,35 +2,6 @@ library(shiny)
 
 shinyServer(function(input, output, session){
     
-    
-    # ------------- Funciones para el calculo de probabilidades --------
-    
-    
-    hipergeometrica <- function(x, k, N, n, acumulada = FALSE){
-        if(acumulada == FALSE & x!=0){
-            resultado <- phyper(q=x, m=k, n=N-k, k=n)- phyper(q=x-1, m=k, n=N-k, k=n)
-        }else{
-            resultado <- phyper(q=x, m=k, n=N-k, k=n)
-        }
-        return(resultado)
-    }
-    
-    # ----------------------- Shadow function ----------------------
-    shadowtext <- function(x, y=NULL, labels, col='white', bg='black',
-                           theta= seq(0, 2*pi, length.out=50), r=0.1, ... ) {
-        
-        xy <- xy.coords(x,y)
-        xo <- r*strwidth('A')
-        yo <- r*strheight('A')
-        
-        # draw background text with small shift in x and y in background colour
-        for (i in theta) {
-            text( xy$x + cos(i)*xo, xy$y + sin(i)*yo, labels, col=bg, ... )
-        }
-        # draw actual text in exact xy position in foreground colour
-        text(xy$x, xy$y, labels, col=col, ... )
-    }
-    
     #--------------------------------------------------------------
     
     output$miplot <- renderPlot({
@@ -68,17 +39,21 @@ shinyServer(function(input, output, session){
                     probabilidad <- pbinom(percentil, size = n, prob = p)
                     prob <- pbinom(0:percentil, size=n, prob=p)
                     barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
-                            xlab=" ", ylab=expression(P(X<=x)), col="deepskyblue3", las=1)
+                            xlab=" ", ylab=expression(P(X<=x)), col="cyan4", las=1)
                     grid()
                     
                     title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
                     
                 }else{
+                    
+                    colores <- rep("cyan4", n + 1)
+                    colores[percentil + 1] <- "#D95914"
+                    
                     probabilidad <- dbinom(percentil, size = n, prob = p)
                     
                     prob <- dbinom(x=0:n, size=n, prob=p)
                     barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab=" ", ylab=expression(P(X==x)), col="deepskyblue3", las=1)
+                            xlab=" ", ylab=expression(P(X==x)), col=colores, las=1)
                     grid()
                     title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
                 }
@@ -122,17 +97,21 @@ shinyServer(function(input, output, session){
                     
                     prob <- ppois(0:percentil, lambda=lambda)
                     barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
-                            xlab="", ylab=expression(P(X<=x)), col="deepskyblue3", las=1)
+                            xlab="", ylab=expression(P(X<=x)), col="cyan4", las=1)
                     grid()
                     
                     title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
                     
                     
                 }else{
+                    
+                    colores <- rep("cyan4", input$n_poisson + 1)
+                    colores[percentil + 1] <- "#D95914"
+                    
                     probabilidad <- dpois(percentil, lambda)
                     prob <- dpois(x=0:input$n_poisson, lambda=lambda)
                     barplot(prob, ylim=c(0, 1), names.arg=0:input$n_poisson,
-                            xlab="x", ylab=expression(P(X==x)), col="deepskyblue3", las=1)
+                            xlab="", ylab=expression(P(X==x)), col=colores, las=1)
                     grid()
                     
                     title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
@@ -155,6 +134,7 @@ shinyServer(function(input, output, session){
             if(input$Propede == "Percentil"){
                 
                 probabilidad <- input$Probabilidad
+                
 
                 # max.x <- 3 * percentil
                 # curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
@@ -175,34 +155,28 @@ shinyServer(function(input, output, session){
                 
                 
                 if(input$Acumulado == "acumulada"){
-                    acumulada = TRUE
-                }else{
-                    acumulada = FALSE
-                }
-                
-                probabilidad <- hipergeometrica(x=percentil, k=k, N=N, n=n, acumulada = acumulada)
-                
-
-                # max.x <- 3 * percentil
-                # curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
-                #       main='Distribución F', ylab="", xlab="", axes=FALSE)
-                # axis(1, at=seq(0, max.x, by=0.5), pos=0)
-                # axis(2, las=1)
-                # secuencia <- seq(percentil, max.x, length.out=10000)
-                # cord.x <- c(percentil, secuencia, max.x)
-                # cord.y <- c(0, df(secuencia, df1, df2), 0)
-                # polygon(cord.x, cord.y, col='lightsalmon3')
-                # altura <- df(x=percentil, df1, df2)
-                # shadowtext(x=percentil, y=altura/2, round(proba, 2),
-                #            col="orchid2", cex=2)
-                # title(sub=bquote(P(F>.(percentil))==.(proba)), cex.sub=2)
-                
-                if(acumulada){
+                    probabilidad <- phyper(q = percentil, m = k, n = N-k, k = n)
+                    
+                    prob <- phyper(q = 0:percentil, m = k, n = N-k, k = n)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
+                            xlab=" ", ylab=expression(P(X<=x)), col="cyan4", las=1)
+                    grid()
+                    
                     title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
                 }else{
+                    
+                    colores <- rep("cyan4", min(n, k) + 1)
+                    colores[percentil + 1] <- "#D95914"
+                    
+                    probabilidad <- dhyper(x = percentil, m = k, n = N-k, k = n)
+                    
+                    prob <- dhyper(x = 0:min(n, k), m = k, n = N-k, k = n)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
+                            xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
+                    grid()
+                    
                     title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
                 }
-
 
             }}
 
