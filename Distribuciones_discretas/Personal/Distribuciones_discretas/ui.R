@@ -7,7 +7,7 @@ shinyUI(fluidPage(
         sidebarPanel(
             selectInput(inputId="Distribucion",
                         label="Elija la distribución:",
-                        choices=c("Binomial", "Poisson", "Hipergeometrica"),
+                        choices=c("Binomial", "Poisson", "Hipergeometrica", "Binomial Negativa"),
                         selected="Binomial"),
             
             
@@ -15,12 +15,13 @@ shinyUI(fluidPage(
                              numericInput(inputId="n_binomial",
                                           label=HTML("Ingrese el tamaño de muestra"),
                                           min = 1,
-                                          value="30",
+                                          value="15",
                                           step=1),
                              
                              numericInput(inputId="p",
                                           label=HTML("Ingrese la probabilidad de éxito"),
                                           min=0,
+                                          max=1,
                                           value="0.5",
                                           step=0.01) ),
             
@@ -29,20 +30,14 @@ shinyUI(fluidPage(
                                           label="Ingrese la media",
                                           min=0,
                                           step=1,
-                                          value="5"),
-                             numericInput(inputId = "n_poisson",
-                                          label = "Ingrese el máximo valor de x para el cual desea ver las probabilidades:",
-                                          min = 1,
-                                          max = 500,
-                                          value = 20,
-                                          step= 1)),
+                                          value="5")),
             
             
             conditionalPanel(condition="input.Distribucion=='Hipergeometrica'",
                              numericInput(inputId="k",
                                           label="Ingrese el número de elementos que tienen la 
                                           caracteristica de intéres (k)",
-                                          value="10",
+                                          value="15",
                                           step=1),
                              
                              numericInput(inputId="N",
@@ -52,29 +47,43 @@ shinyUI(fluidPage(
                              
                              numericInput(inputId="n_hipergeometrica",
                                           label="Ingrese el tamaño de muestra (n)",
-                                          value="5",
+                                          value="10",
                                           step=1)),
+            
+            conditionalPanel(condition="input.Distribucion=='Binomial Negativa'",
+                             numericInput(inputId="r_nbin",
+                                          label=HTML("Ingrese el número de éxitos"),
+                                          min = 1,
+                                          value="4",
+                                          step=1),
+                             
+                             numericInput(inputId="p_nbin",
+                                          label=HTML("Ingrese la probabilidad de éxito en cada ensayo"),
+                                          min=0,
+                                          max=1,
+                                          value="0.5",
+                                          step=0.01) ),
             
             
             selectInput(inputId="Propede",
                         label="Opciones para calcular:",
-                        choices=c("Probabilidad","Percentil"),
+                        choices=c("Probabilidad","Cuantil"),
                         selected="Probabilidad"),
             
             conditionalPanel(condition="input.Propede=='Probabilidad'",
                              
                              selectInput(inputId = "Acumulado",
                                          label= "Opciones para calcular:",
-                                         choices = c("acumulada", "puntual"),
+                                         choices = c("acumulada", "puntual", "supervivencia"),
                                          selected = "acumulada"),
                              
                              
-                             numericInput(inputId="Percentil",
-                                          label="Ingrese percentil",
+                             numericInput(inputId="Cuantil",
+                                          label="Ingrese cuantil",
                                           value=5, step=1)),
             
             
-            conditionalPanel(condition="input.Propede=='Percentil'",
+            conditionalPanel(condition="input.Propede=='Cuantil'",
                              numericInput(inputId="Probabilidad",
                                           label="Ingrese probabilidad",
                                           value=0.70, step=0.001,

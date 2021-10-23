@@ -12,7 +12,7 @@ shinyServer(function(input, output, session){
             n <- input$n_binomial
             p <- input$p
             
-            if(input$Propede == "Percentil"){
+            if(input$Propede == "Cuantil"){
                 
                 probabilidad <- input$Probabilidad
                 
@@ -32,30 +32,49 @@ shinyServer(function(input, output, session){
             
             else {
                 
-                percentil <- input$Percentil
+                cuantil <- input$Cuantil
                 
                 
                 if(input$Acumulado == "acumulada"){
-                    probabilidad <- pbinom(percentil, size = n, prob = p)
-                    prob <- pbinom(0:percentil, size=n, prob=p)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
-                            xlab=" ", ylab=expression(P(X<=x)), col="cyan4", las=1)
+                    
+                    colores <- rep("cyan4", n + 1)
+                    colores[0:cuantil + 1] <- "#D95914"
+                    
+                    probabilidad <- pbinom(cuantil, size = n, prob = p)
+                    prob <- pbinom(0:n, size=n, prob=p)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                            xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
                     grid()
                     
-                    title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
+                    
+                }else if(input$Acumulado == "supervivencia"){
+                    
+                    
+                    colores <- rep("cyan4", n + 1)
+                    colores[(cuantil+2):(n+1)] <- "#D95914"
+                    
+                    probabilidad <- pbinom(cuantil, size = n, prob = p, lower.tail = F)
+                    prob <- pbinom(0:n, size=n, prob=p)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                            xlab=" ", ylab=expression(P(X>x)), col=colores, las=1)
+                    grid()
+                    
+                    title(sub=bquote(P(X > .(cuantil))==.(probabilidad)), cex.sub=2)
+                    
                     
                 }else{
                     
                     colores <- rep("cyan4", n + 1)
-                    colores[percentil + 1] <- "#D95914"
+                    colores[cuantil + 1] <- "#D95914"
                     
-                    probabilidad <- dbinom(percentil, size = n, prob = p)
+                    probabilidad <- dbinom(cuantil, size = n, prob = p)
                     
                     prob <- dbinom(x=0:n, size=n, prob=p)
                     barplot(prob, ylim=c(0, 1), names.arg=0:n,
                             xlab=" ", ylab=expression(P(X==x)), col=colores, las=1)
                     grid()
-                    title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
+                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
                 }
                 
                 
@@ -65,9 +84,10 @@ shinyServer(function(input, output, session){
 
         if(input$Distribucion == "Poisson"){
             lambda <- input$lambda
+            n <- qpois(0.99999, lambda)
 
 
-            if(input$Propede == "Percentil"){
+            if(input$Propede == "Cuantil"){
                 probabilidad <- input$Probabilidad
                 
 
@@ -89,32 +109,52 @@ shinyServer(function(input, output, session){
 
             else {
                 
-                percentil <- input$Percentil
+                cuantil <- input$Cuantil
                 
                 
                 if(input$Acumulado == "acumulada"){
-                    probabilidad <- ppois(percentil, lambda)
                     
-                    prob <- ppois(0:percentil, lambda=lambda)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
-                            xlab="", ylab=expression(P(X<=x)), col="cyan4", las=1)
+                    colores <- rep("cyan4", n + 1)
+                    colores[0:cuantil + 1] <- "#D95914"
+                    
+                    probabilidad <- ppois(cuantil, lambda)
+                    
+                    prob <- ppois(0:n, lambda=lambda)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                            xlab="", ylab=expression(P(X<=x)), col=colores, las=1)
                     grid()
                     
-                    title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
+                    
+                    
+                }else if(input$Acumulado == "supervivencia"){
+                    
+                    colores <- rep("cyan4", n + 1)
+                    colores[(cuantil + 2):(n+1)] <- "#D95914"
+                    
+                    probabilidad <- ppois(cuantil, lambda, lower.tail = F)
+                    
+                    prob <- ppois(0:n, lambda=lambda)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                            xlab="", ylab=expression(P(X>x)), col=colores, las=1)
+                    grid()
+                    
+                    title(sub=bquote(P(X > .(cuantil))==.(probabilidad)), cex.sub=2)
+                   
                     
                     
                 }else{
                     
-                    colores <- rep("cyan4", input$n_poisson + 1)
-                    colores[percentil + 1] <- "#D95914"
+                    colores <- rep("cyan4", n + 1)
+                    colores[cuantil + 1] <- "#D95914"
                     
-                    probabilidad <- dpois(percentil, lambda)
-                    prob <- dpois(x=0:input$n_poisson, lambda=lambda)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:input$n_poisson,
+                    probabilidad <- dpois(cuantil, lambda)
+                    prob <- dpois(x=0:n, lambda=lambda)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
                             xlab="", ylab=expression(P(X==x)), col=colores, las=1)
                     grid()
                     
-                    title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
+                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
                 }
                 
                 
@@ -131,7 +171,7 @@ shinyServer(function(input, output, session){
             n <- as.integer(input$n_hipergeometrica)
             
 
-            if(input$Propede == "Percentil"){
+            if(input$Propede == "Cuantil"){
                 
                 probabilidad <- input$Probabilidad
                 
@@ -151,34 +191,120 @@ shinyServer(function(input, output, session){
 
             }else{
                 
-                percentil <- input$Percentil
+                cuantil <- input$Cuantil
                 
                 
                 if(input$Acumulado == "acumulada"){
-                    probabilidad <- phyper(q = percentil, m = k, n = N-k, k = n)
                     
-                    prob <- phyper(q = 0:percentil, m = k, n = N-k, k = n)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:percentil,
-                            xlab=" ", ylab=expression(P(X<=x)), col="cyan4", las=1)
+                    colores <- rep("cyan4", min(n, k) + 1)
+                    colores[0:cuantil + 1] <- "#D95914"
+                    
+                    probabilidad <- phyper(q = cuantil, m = k, n = N-k, k = n)
+                    
+                    prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
+                            xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
                     grid()
                     
-                    title(sub=bquote(P(X <= .(percentil))==.(probabilidad)), cex.sub=2)
+                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
+                    
+                }else if(input$Acumulado == "supervivencia"){
+                    
+                    
+                    colores <- rep("cyan4", min(n, k) + 1)
+                    colores[(cuantil + 2):(min(n, k) + 1)] <- "#D95914"
+                    
+                    probabilidad <- phyper(q = cuantil, m = k, n = N-k, k = n, lower.tail = F)
+                    
+                    prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
+                    barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
+                            xlab=" ", ylab=expression(P(X>x)), col=colores, las=1)
+                    grid()
+                    
+                    title(sub=bquote(P(X > .(cuantil))==.(probabilidad)), cex.sub=2)
+                    
+                    
+                    
                 }else{
                     
                     colores <- rep("cyan4", min(n, k) + 1)
-                    colores[percentil + 1] <- "#D95914"
+                    colores[cuantil + 1] <- "#D95914"
                     
-                    probabilidad <- dhyper(x = percentil, m = k, n = N-k, k = n)
+                    probabilidad <- dhyper(x = cuantil, m = k, n = N-k, k = n)
                     
                     prob <- dhyper(x = 0:min(n, k), m = k, n = N-k, k = n)
                     barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
                             xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
                     grid()
                     
-                    title(sub=bquote(P(X == .(percentil))==.(probabilidad)), cex.sub=2)
+                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
                 }
 
             }}
+        
+        #----------------------------- Binomial Negativa ---------------------------------
+        
+        if(input$Distribucion == "Binomial Negativa"){
+            r <- input$r_nbin
+            p <- input$p_nbin
+            
+            if(input$Propede == "Cuantil"){
+                
+                probabilidad <- input$Probabilidad
+                
+                # k <- 5  # numero de desviaciones
+                # curve(dnorm(x, media, desvi), xlim=media+c(-k,k)*desvi, lwd=3,
+                #       main='Distribución normal', ylab="", xlab="", axes=FALSE)
+                # axis(1, at=seq(media-k*desvi, media+k*desvi, desvi), pos=0)
+                # axis(2, las=1)
+                # secuencia <- seq(media-k*desvi, percentil, length.out=10000)
+                # cord.x <- c(media-k*desvi, secuencia, percentil)
+                # cord.y <- c(0, dnorm(secuencia, media, desvi), 0)
+                # polygon(cord.x, cord.y, col='steelblue')
+                # shadowtext(x=percentil, y=0, round(percentil, 2), col="chartreuse", cex=2)
+                # title(sub=bquote(P(X<.(percentil))==.(proba)), cex.sub=2)
+                
+            }
+            
+            else {
+                
+                cuantil <- input$Cuantil
+                
+                
+                if(input$Acumulado == "acumulada"){
+                    
+
+                    probabilidad <- pnbinom(cuantil-r, r, p)
+                    prob <- pnbinom(0:(cuantil-r), r, p)
+                    barplot(prob, ylim=c(0, 1), names.arg=r:cuantil,
+                            xlab=" ", ylab=expression(P(X<=x)), col="#D95914", las=1)
+                    grid()
+                    
+                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
+                    
+                }else if(input$Acumulado == "supervivencia"){
+                
+        
+                    
+                    
+                }else{
+                    
+                    colores <- rep("cyan4", cuantil-r+1)
+                    colores[cuantil- r + 1] <- "#D95914"
+                    
+                    probabilidad <- dnbinom(cuantil-r, r, p)
+                    
+                    prob <- dnbinom(x=0:(cuantil-r), size=r, prob=p)
+                    barplot(prob, ylim=c(0, 1), names.arg=r:cuantil,
+                            xlab=" ", ylab=expression(P(X==x)), col=colores, las=1)
+                    grid()
+                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
+                }
+                
+                
+            }}
+        
+        
 
     })
 })
