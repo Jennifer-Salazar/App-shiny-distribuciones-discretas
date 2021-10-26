@@ -52,11 +52,11 @@ shinyServer(function(input, output, session){
                     
                     
                     colores <- rep("cyan4", n + 1)
-                    colores[(cuantil+2):(n+1)] <- "#D95914"
+                    colores[(cuantil+1):(n+2)] <- "#D95914"
                     
                     probabilidad <- pbinom(cuantil, size = n, prob = p, lower.tail = F)
-                    prob <- pbinom(0:n, size=n, prob=p)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                    prob <- pbinom(0:n, size=n, prob=p, lower.tail = F)
+                    barplot(prob, ylim=c(0, 1), names.arg=1:(n+1),
                             xlab=" ", ylab=expression(P(X>x)), col=colores, las=1)
                     grid()
                     
