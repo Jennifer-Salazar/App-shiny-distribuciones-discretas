@@ -7,7 +7,7 @@ shinyUI(fluidPage(
         sidebarPanel(
             selectInput(inputId="Distribucion",
                         label="Elija la distribución:",
-                        choices=c("Binomial", "Poisson", "Hipergeometrica", "Binomial Negativa"),
+                        choices=c("Binomial", "Poisson", "Hipergeometrica"),
                         selected="Binomial"),
             
             
@@ -50,20 +50,6 @@ shinyUI(fluidPage(
                                           value="10",
                                           step=1)),
             
-            conditionalPanel(condition="input.Distribucion=='Binomial Negativa'",
-                             numericInput(inputId="r_nbin",
-                                          label=HTML("Ingrese el número de éxitos"),
-                                          min = 1,
-                                          value="4",
-                                          step=1),
-                             
-                             numericInput(inputId="p_nbin",
-                                          label=HTML("Ingrese la probabilidad de éxito en cada ensayo"),
-                                          min=0,
-                                          max=1,
-                                          value="0.5",
-                                          step=0.01) ),
-            
             
             selectInput(inputId="Propede",
                         label="Opciones para calcular:",
@@ -98,7 +84,8 @@ shinyUI(fluidPage(
         
         mainPanel(
             tabsetPanel(type = "tabs",
-                        tabPanel("Gráfica", plotOutput(outputId="miplot"))
+                        tabPanel("Gráfica", plotOutput(outputId="miplot"),
+                                 uiOutput("Texto_prueba"))
                         
                         
             )

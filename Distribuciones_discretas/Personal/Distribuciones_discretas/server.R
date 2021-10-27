@@ -16,17 +16,35 @@ shinyServer(function(input, output, session){
                 
                 probabilidad <- input$Probabilidad
                 
-                # k <- 5  # numero de desviaciones
-                # curve(dnorm(x, media, desvi), xlim=media+c(-k,k)*desvi, lwd=3,
-                #       main='Distribución normal', ylab="", xlab="", axes=FALSE)
-                # axis(1, at=seq(media-k*desvi, media+k*desvi, desvi), pos=0)
-                # axis(2, las=1)
-                # secuencia <- seq(media-k*desvi, percentil, length.out=10000)
-                # cord.x <- c(media-k*desvi, secuencia, percentil)
-                # cord.y <- c(0, dnorm(secuencia, media, desvi), 0)
-                # polygon(cord.x, cord.y, col='steelblue')
-                # shadowtext(x=percentil, y=0, round(percentil, 2), col="chartreuse", cex=2)
-                # title(sub=bquote(P(X<.(percentil))==.(proba)), cex.sub=2)
+                cuantil <- qbinom(probabilidad, 15, 0.5)
+                prob1 <- round(pbinom(cuantil, 15, 0.5), 4)
+                prob2 <- round(pbinom(cuantil-1, 15, 0.5),4)
+                
+                colores <- rep("cyan4", n + 1)
+                colores[c(cuantil,cuantil+1)] <- "#D95914"
+                
+                
+                prob <- pbinom(0:n, size=n, prob=p)
+                barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                        xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
+                grid()
+                
+
+                
+                title(sub=bquote(P[.(probabilidad)]==.(cuantil)), cex.sub=2)
+                
+                
+                output$Texto_prueba <-  renderUI({
+                    
+                    list(h4(paste("P(X ≤", cuantil-1, ")=" ,prob2, sep="")), 
+                         h4(paste("P(X ≤", cuantil, ")=" ,prob1, sep="")))
+                    
+                    
+                    
+                })
+                
+                
+                
                 
             }
             
