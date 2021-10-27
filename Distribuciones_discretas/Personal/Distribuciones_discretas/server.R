@@ -16,9 +16,9 @@ shinyServer(function(input, output, session){
                 
                 probabilidad <- input$Probabilidad
                 
-                cuantil <- qbinom(probabilidad, 15, 0.5)
-                prob1 <- round(pbinom(cuantil, 15, 0.5), 4)
-                prob2 <- round(pbinom(cuantil-1, 15, 0.5),4)
+                cuantil <- qbinom(probabilidad, n, p)
+                prob1 <- round(pbinom(cuantil, n, p), 4)
+                prob2 <- round(pbinom(cuantil-1, n, p),4)
                 
                 colores <- rep("cyan4", n + 1)
                 colores[c(cuantil,cuantil+1)] <- "#D95914"
@@ -108,21 +108,36 @@ shinyServer(function(input, output, session){
             if(input$Propede == "Cuantil"){
                 probabilidad <- input$Probabilidad
                 
+                
+                cuantil <- qpois(probabilidad, lambda)
+                prob1 <- round(ppois(cuantil, lambda), 4)
+                prob2 <- round(ppois(cuantil-1, lambda),4)
+                
+                colores <- rep("cyan4", n + 1)
+                colores[c(cuantil,cuantil+1)] <- "#D95914"
 
-                # curve(dt(x, df), xlim=c(-5,5), lwd=3,
-                #       main='Distribución t-student', ylab="", xlab="",
-                #       axes=FALSE)
-                # axis(1, at=seq(-5, 5, by=0.5), pos=0)
-                # axis(2, las=1)
-                # secuencia <- seq(percentil, 5, length.out=10000)
-                # cord.x <- c(percentil, secuencia, 5)
-                # cord.y <- c(0, dt(secuencia, df=df), 0)
-                # polygon(cord.x, cord.y, col='darkolivegreen3')
-                # shadowtext(x=percentil, y=0.01, round(percentil, 2),
-                #            col="chartreuse", cex=2)
-                # title(sub=bquote(P(t>.(percentil))==.(proba)), cex.sub=2)
-                # 
-                # output$perce <- renderText(percentil)
+                
+                prob <- ppois(0:n, lambda=lambda)
+                barplot(prob, ylim=c(0, 1), names.arg=0:n,
+                        xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
+                grid()
+                
+                
+                
+                title(sub=bquote(P[.(probabilidad)]==.(cuantil)), cex.sub=2)
+                
+                
+                output$Texto_prueba <-  renderUI({
+                    
+                    list(h4(paste("P(X ≤", cuantil-1, ")=" ,prob2, sep="")), 
+                         h4(paste("P(X ≤", cuantil, ")=" ,prob1, sep="")))
+                    
+                    
+                    
+                })
+                
+
+               
             }
 
             else {
@@ -193,19 +208,36 @@ shinyServer(function(input, output, session){
                 
                 probabilidad <- input$Probabilidad
                 
+                
+                cuantil <- qhyper(probabilidad, m = k, n = N-k, k = n)
+                prob1 <- round(phyper(q = cuantil, m = k, n = N-k, k = n), 4)
+                prob2 <- round(phyper(q = cuantil-1, m = k, n = N-k, k = n),4)
+       
+                
+                colores <- rep("cyan4", min(n, k) + 1)
+                colores[c(cuantil,cuantil+1)] <- "#D95914"
+                
+                
+                prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
+                
+                barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
+                        xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
+                grid()
+                
+                
+                title(sub=bquote(P[.(probabilidad)]==.(cuantil)), cex.sub=2)
+                
+                
+                output$Texto_prueba <-  renderUI({
+                    
+                    list(h4(paste("P(X ≤", cuantil-1, ")=" ,prob2, sep="")), 
+                         h4(paste("P(X ≤", cuantil, ")=" ,prob1, sep="")))
+                    
+                    
+                    
+                })
+                
 
-                # max.x <- 3 * percentil
-                # curve(df(x, df1, df2), xlim=c(0, max.x), lwd=3,
-                #       main='Distribución F', ylab="", xlab="", axes=FALSE)
-                # axis(1, at=seq(0, max.x, by=0.5), pos=0)
-                # axis(2, las=1)
-                # secuencia <- seq(percentil, max.x, length.out=10000)
-                # cord.x <- c(percentil, secuencia, max.x)
-                # cord.y <- c(0, df(secuencia, df1, df2), 0)
-                # polygon(cord.x, cord.y, col='lightsalmon3')
-                # shadowtext(x=percentil, y=0.01, round(percentil, 2),
-                #            col="chartreuse", cex=2)
-                # title(sub=bquote(P(F>.(percentil))==.(proba)), cex.sub=2)
 
             }else{
                 
