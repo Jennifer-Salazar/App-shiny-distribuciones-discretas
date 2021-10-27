@@ -95,8 +95,11 @@ shinyUI(fluidPage(
         
         mainPanel(
             tabsetPanel(type = "tabs",
-                        tabPanel("Gráfica", plotOutput(outputId="miplot"),
-                                 uiOutput("Texto_prueba"))
+                        tabPanel("Gráfica", 
+                                 plotOutput(outputId="miplot"),
+                                 uiOutput("Texto_prueba")),
+                        tabPanel("Teoria", 
+                                 textOutput(outputId = "teoria"))
                         
                         
             )
