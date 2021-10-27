@@ -1,8 +1,19 @@
 shinyUI(fluidPage(
-    titlePanel("Distribuciones discretas"),
-    h4(p("Esta aplicación te ayudará a calcular probabilidades y 
-       percentiles de distribuciones de probabilidad discretas."),
-       align="left"),
+    
+    tags$link(href = "estilo.css", rel = "stylesheet"),
+    
+    
+    div(id = "header",
+        div(id = "title",
+            "Distribuciones discretas"
+        ),
+        div(id = "subtitle",
+            
+            "Esta aplicación te ayudará a calcular probabilidades y 
+            cuantiles de distribuciones de probabilidad discretas."),
+    ),
+    
+    
     sidebarLayout(
         sidebarPanel(
             selectInput(inputId="Distribucion",

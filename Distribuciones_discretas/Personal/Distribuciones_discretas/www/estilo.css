@@ -1,0 +1,21 @@
+  
+#header {
+    text-align: center;
+    color: #fdfdfd;
+    text-shadow: 0 0 1px rgb(255, 255, 255);
+    padding: 25px 0 80px;
+    background: #2845ad;
+    background: linear-gradient(to left, #10cce0, #3ccc22);
+    border-bottom: 1px solid #ddd;
+    margin: 0 -15px;
+}
+  
+#title {
+    font-size: 5em;
+    text-shadow: 0 0 5px #000;
+}
+  
+#subtitle {
+    font-size: 2em;
+    margin-top: -5px;
+}

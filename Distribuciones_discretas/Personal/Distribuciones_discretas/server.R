@@ -1,4 +1,7 @@
 library(shiny)
+library(ggplot2)
+library(ggthemes)
+
 
 shinyServer(function(input, output, session){
     
@@ -12,38 +15,39 @@ shinyServer(function(input, output, session){
             n <- input$n_binomial
             p <- input$p
             
+            # Eje x
+            x <- 0:n
+            
+            # lista vacia para las etiquetas
+            nombres <- rep("", length(x))
+            
             if(input$Propede == "Cuantil"){
                 
                 probabilidad <- input$Probabilidad
                 
+                # Calculo del cuantil
                 cuantil <- qbinom(probabilidad, n, p)
-                prob1 <- round(pbinom(cuantil, n, p), 4)
-                prob2 <- round(pbinom(cuantil-1, n, p),4)
                 
-                colores <- rep("cyan4", n + 1)
-                colores[c(cuantil,cuantil+1)] <- "#D95914"
+                # Calculo de la probabilidad
+                prob <- pbinom(x, size=n, prob=p)
                 
+                # Valores para mostrar en la gráfica
+                nombres[cuantil:(cuantil + 1)] <- round(prob[cuantil:(cuantil + 1)], 3)
                 
-                prob <- pbinom(0:n, size=n, prob=p)
-                barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                        xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
-                grid()
-                
-
-                
-                title(sub=bquote(P[.(probabilidad)]==.(cuantil)), cex.sub=2)
+                # Parámetros gráficos
+                ylabel <- expression(P(X<=x)) 
+                titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+                tipo <- "Función de distribución acumulada"
                 
                 
                 output$Texto_prueba <-  renderUI({
                     
-                    list(h4(paste("P(X ≤", cuantil-1, ")=" ,prob2, sep="")), 
-                         h4(paste("P(X ≤", cuantil, ")=" ,prob1, sep="")))
+                    list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
+                         h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
                     
                     
                     
-                })
-                
-                
+                }) 
                 
                 
             }
@@ -55,44 +59,43 @@ shinyServer(function(input, output, session){
                 
                 if(input$Acumulado == "acumulada"){
                     
-                    colores <- rep("cyan4", n + 1)
-                    colores[0:cuantil + 1] <- "#D95914"
+                    # Calculo de la probabilidad
+                    prob <- pbinom(x, size=n, prob=p)
                     
-                    probabilidad <- pbinom(cuantil, size = n, prob = p)
-                    prob <- pbinom(0:n, size=n, prob=p)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
-                    grid()
+                    # Valores para mostrar en la gráfica
+                    nombres[0:cuantil + 1] <- round(prob[0:cuantil + 1], 3)
                     
-                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X<=x)) 
+                    titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+                    tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
                     
-                    
-                    colores <- rep("cyan4", n + 1)
-                    colores[(cuantil+2):(n+1)] <- "#D95914"
-                    
-                    probabilidad <- pbinom(cuantil, size = n, prob = p, lower.tail = F)
+                    # Calculo de las probabilidades
                     prob <- pbinom(-1:(n-1), size=n, prob=p, lower.tail = F)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab=" ", ylab=expression(P(X>x)), col=colores, las=1)
-                    grid()
                     
-                    title(sub=bquote(P(X > .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Valores para mostrar en la gráfica
+                    nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                    
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X>x))
+                    titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
+                    tipo <- "Función de distribución de supervivencia"
                     
                     
                 }else{
                     
-                    colores <- rep("cyan4", n + 1)
-                    colores[cuantil + 1] <- "#D95914"
+                    # Calculo de las probabilidades
+                    prob <- dbinom(x, size=n, prob=p)
                     
-                    probabilidad <- dbinom(cuantil, size = n, prob = p)
+                    # Valores para mostrar en la gráfica
+                    nombres[cuantil + 1] <- round(prob[cuantil + 1], 3) 
                     
-                    prob <- dbinom(x=0:n, size=n, prob=p)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab=" ", ylab=expression(P(X==x)), col=colores, las=1)
-                    grid()
-                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X==x)) 
+                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
+                    tipo <- "Función de masa de probabilidad"
                 }
                 
                 
@@ -103,40 +106,38 @@ shinyServer(function(input, output, session){
         if(input$Distribucion == "Poisson"){
             lambda <- input$lambda
             n <- qpois(0.99999, lambda)
-
+            
+            # Eje x
+            x <- 0:n
+            
+            # lista vacia para las etiquetas
+            nombres <- rep("", length(x))
 
             if(input$Propede == "Cuantil"){
+                
                 probabilidad <- input$Probabilidad
                 
-                
+                # Calculo del cuantil
                 cuantil <- qpois(probabilidad, lambda)
-                prob1 <- round(ppois(cuantil, lambda), 4)
-                prob2 <- round(ppois(cuantil-1, lambda),4)
                 
-                colores <- rep("cyan4", n + 1)
-                colores[c(cuantil,cuantil+1)] <- "#D95914"
-
+                # Calculo de la probabilidad
+                prob <- ppois(x, lambda=lambda)
                 
-                prob <- ppois(0:n, lambda=lambda)
-                barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                        xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
-                grid()
+                # Valores para mostrar en la gráfica
+                nombres[cuantil:(cuantil + 1)] <- round(prob[cuantil:(cuantil + 1)], 3)
                 
-                
-                
-                title(sub=bquote(P[.(probabilidad)]==.(cuantil)), cex.sub=2)
+                # Parámetros gráficos
+                ylabel <- expression(P(X<=x)) 
+                titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+                tipo <- "Función de distribución acumulada"
                 
                 
                 output$Texto_prueba <-  renderUI({
                     
-                    list(h4(paste("P(X ≤", cuantil-1, ")=" ,prob2, sep="")), 
-                         h4(paste("P(X ≤", cuantil, ")=" ,prob1, sep="")))
-                    
-                    
+                    list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
+                         h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
                     
                 })
-                
-
                
             }
 
@@ -144,50 +145,46 @@ shinyServer(function(input, output, session){
                 
                 cuantil <- input$Cuantil
                 
-                
                 if(input$Acumulado == "acumulada"){
                     
-                    colores <- rep("cyan4", n + 1)
-                    colores[0:cuantil + 1] <- "#D95914"
+                    # Calculo de la probabilidad
+                    prob <- ppois(x, lambda=lambda)
                     
-                    probabilidad <- ppois(cuantil, lambda)
+                    # Valores para mostrar en la gráfica
+                    nombres[0:cuantil + 1] <- round(prob[0:cuantil + 1], 3)
                     
-                    prob <- ppois(0:n, lambda=lambda)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab="", ylab=expression(P(X<=x)), col=colores, las=1)
-                    grid()
-                    
-                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
-                    
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X<=x)) 
+                    titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+                    tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
                     
-                    colores <- rep("cyan4", n + 1)
-                    colores[(cuantil + 2):(n+1)] <- "#D95914"
                     
-                    probabilidad <- ppois(cuantil, lambda, lower.tail = F)
-                    
+                    # Calculo de las probabilidades
                     prob <- ppois(-1:(n-1), lambda=lambda, lower.tail = F)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab="", ylab=expression(P(X>x)), col=colores, las=1)
-                    grid()
                     
-                    title(sub=bquote(P(X > .(cuantil))==.(probabilidad)), cex.sub=2)
-                   
+                    # Valores para mostrar en la gráfica
+                    nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                    
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X>x))
+                    titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
+                    tipo <- "Función de distribución de supervivencia"
                     
                     
                 }else{
                     
-                    colores <- rep("cyan4", n + 1)
-                    colores[cuantil + 1] <- "#D95914"
+                    # Calculo de las probabilidades
+                    prob <- dpois(x, lambda=lambda)
                     
-                    probabilidad <- dpois(cuantil, lambda)
-                    prob <- dpois(x=0:n, lambda=lambda)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:n,
-                            xlab="", ylab=expression(P(X==x)), col=colores, las=1)
-                    grid()
+                    # Valores para mostrar en la gráfica
+                    nombres[cuantil + 1] <- round(prob[cuantil + 1], 3) 
                     
-                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X==x)) 
+                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
+                    tipo <- "Función de masa de probabilidad"
                 }
                 
                 
@@ -203,37 +200,36 @@ shinyServer(function(input, output, session){
             N <- as.integer(input$N)
             n <- as.integer(input$n_hipergeometrica)
             
-
+            # Eje x
+            x <- 0:min(n, k)
+            
+            # lista vacia para las etiquetas
+            nombres <- rep("", length(x))
+            
             if(input$Propede == "Cuantil"){
                 
                 probabilidad <- input$Probabilidad
                 
                 
+                # Calculo del cuantil
                 cuantil <- qhyper(probabilidad, m = k, n = N-k, k = n)
-                prob1 <- round(phyper(q = cuantil, m = k, n = N-k, k = n), 4)
-                prob2 <- round(phyper(q = cuantil-1, m = k, n = N-k, k = n),4)
-       
                 
-                colores <- rep("cyan4", min(n, k) + 1)
-                colores[c(cuantil,cuantil+1)] <- "#D95914"
-                
-                
+                # Calculo de la probabilidad
                 prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
                 
-                barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
-                        xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
-                grid()
+                # Valores para mostrar en la gráfica
+                nombres[cuantil:(cuantil + 1)] <- round(prob[cuantil:(cuantil + 1)], 3)
                 
-                
-                title(sub=bquote(P[.(probabilidad)]==.(cuantil)), cex.sub=2)
+                # Parámetros gráficos
+                ylabel <- expression(P(X<=x)) 
+                titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+                tipo <- "Función de distribución acumulada"
                 
                 
                 output$Texto_prueba <-  renderUI({
                     
-                    list(h4(paste("P(X ≤", cuantil-1, ")=" ,prob2, sep="")), 
-                         h4(paste("P(X ≤", cuantil, ")=" ,prob1, sep="")))
-                    
-                    
+                    list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
+                         h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
                     
                 })
                 
@@ -243,55 +239,70 @@ shinyServer(function(input, output, session){
                 
                 cuantil <- input$Cuantil
                 
-                
                 if(input$Acumulado == "acumulada"){
                     
-                    colores <- rep("cyan4", min(n, k) + 1)
-                    colores[0:cuantil + 1] <- "#D95914"
-                    
-                    probabilidad <- phyper(q = cuantil, m = k, n = N-k, k = n)
-                    
+                    # Calculo de las probabilidades
                     prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
-                            xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
-                    grid()
                     
-                    title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Valores para mostrar en la gráfica
+                    nombres[0:cuantil + 1] <- round(prob[0:cuantil + 1], 3)
+                    
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X<=x)) 
+                    titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+                    tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
                     
-                    
-                    colores <- rep("cyan4", min(n, k) + 1)
-                    colores[(cuantil + 2):(min(n, k) + 1)] <- "#D95914"
-                    
-                    probabilidad <- phyper(q = cuantil, m = k, n = N-k, k = n, lower.tail = F)
-                    
+                    # Calculo de las probabilidades
                     prob <- phyper(q = -1:(min(n, k)-1), m = k, n = N-k, k = n, lower.tail = F)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
-                            xlab=" ", ylab=expression(P(X>x)), col=colores, las=1)
-                    grid()
                     
-                    title(sub=bquote(P(X > .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Valores para mostrar en la gráfica
+                    nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
                     
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X>x))
+                    titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
+                    tipo <- "Función de distribución de supervivencia"
                     
                     
                 }else{
                     
-                    colores <- rep("cyan4", min(n, k) + 1)
-                    colores[cuantil + 1] <- "#D95914"
-                    
-                    probabilidad <- dhyper(x = cuantil, m = k, n = N-k, k = n)
-                    
+                    # Calculo de las probabilidades
                     prob <- dhyper(x = 0:min(n, k), m = k, n = N-k, k = n)
-                    barplot(prob, ylim=c(0, 1), names.arg=0:min(n, k),
-                            xlab=" ", ylab=expression(P(X<=x)), col=colores, las=1)
-                    grid()
                     
-                    title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
+                    # Valores para mostrar en la gráfica
+                    nombres[cuantil + 1] <- round(prob[cuantil + 1], 3) 
+                    
+                    # Parámetros gráficos
+                    ylabel <- expression(P(X==x)) 
+                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
+                    tipo <- "Función de masa de probabilidad"
                 }
 
             }}
         
 
+        # Gráficar la distribución ------------------------------------------------
+        
+        df <- data.frame(
+            x = as.factor(x),
+            y = prob,
+            name = nombres
+        )
+
+        ggplot(df, aes(x=x, y=y, fill = ifelse(name == "", 1, 0) )) +
+            geom_bar(stat = "identity", color="black", show.legend = FALSE) +
+            geom_text(aes(label=name), vjust=-0.3, size=3.5) + #, fill = "white") +
+            labs(
+                title = titulo,
+                subtitle = tipo,
+                caption = "",
+                x = "",
+                y = ylabel
+            ) +
+            theme_fivethirtyeight()
+        
+    
     })
 })
