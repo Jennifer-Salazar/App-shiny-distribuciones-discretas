@@ -15,7 +15,20 @@ shinyUI(fluidPage(
     
     
     sidebarLayout(
-        sidebarPanel(
+        mainPanel(
+            tabsetPanel(type = "tabs",
+                        tabPanel("Gráfica", 
+                                 plotOutput(outputId="miplot"),
+                                 uiOutput("Texto_prueba")),
+                        tabPanel("Teoria", 
+                                 textOutput(outputId = "teoria"))
+                        
+                        
+            )
+        ),
+        
+        
+        sidebarPanel(class = "panel",
             selectInput(inputId="Distribucion",
                         label="Elija la distribución:",
                         choices=c("Binomial", "Poisson", "Hipergeometrica"),
@@ -93,15 +106,4 @@ shinyUI(fluidPage(
         ),
         
         
-        mainPanel(
-            tabsetPanel(type = "tabs",
-                        tabPanel("Gráfica", 
-                                 plotOutput(outputId="miplot"),
-                                 uiOutput("Texto_prueba")),
-                        tabPanel("Teoria", 
-                                 textOutput(outputId = "teoria"))
-                        
-                        
-            )
-        )
     )))

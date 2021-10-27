@@ -56,6 +56,12 @@ shinyServer(function(input, output, session){
                 
                 cuantil <- input$Cuantil
                 
+                output$Texto_prueba <-  renderUI({
+                    
+                    
+                    
+                }) 
+                
                 
                 if(input$Acumulado == "acumulada"){
                     
@@ -144,6 +150,13 @@ shinyServer(function(input, output, session){
             else {
                 
                 cuantil <- input$Cuantil
+                
+                output$Texto_prueba <-  renderUI({
+                    
+                    
+                    
+                }) 
+                
                 
                 if(input$Acumulado == "acumulada"){
                     
@@ -238,6 +251,13 @@ shinyServer(function(input, output, session){
             }else{
                 
                 cuantil <- input$Cuantil
+                
+                output$Texto_prueba <-  renderUI({
+                    
+                    
+                    
+                }) 
+                
                 
                 if(input$Acumulado == "acumulada"){
                     
