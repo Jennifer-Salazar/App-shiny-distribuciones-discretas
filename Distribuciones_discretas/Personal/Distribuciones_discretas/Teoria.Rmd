@@ -1,0 +1,121 @@
+---
+title: "Teoría"
+author: 
+  -"Jennifer Salazar"   
+  -"Miguel Londoño"
+date: ""
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Distribución binomial 
+
+
+Sea $X$: # de éxitos en los $n$ ensayos independientes
+
+
+entonces:
+
+
+$$X\; \sim \; \mbox{bin}\left(n\,,\,p\right)$$
+
+cuya función de masa de probabilidad es:
+
+$$ p(x) = {n \choose x}\; p^{x} \; \left(1- p\right)^{n-x}\quad ;\quad x = 0\,,\,1\,,\,2\,,\,\cdots \,,\,n \;.$$
+
+donde $n$ es el número de ensayos independientes y $p$ es la probabilidad de éxito de cada uno de los ensayos
+
+$$E[X]=np, ~~~~~ V(X)=np(1-p)$$ 
+
+
+## Distribución Poisson
+
+Sea $X$: una variable aleatoria que representa el número de eventos aleatorios independientes que ocurren a una rapidez constante sobre una unidad de tiempo o espacio.
+
+
+
+entonces 
+
+
+$$X \sim Poisson(\lambda)$$ 
+
+Cuya función de masa de probabilidad es:
+
+
+$$p(x)=\frac{e^{-\lambda}\;\lambda^{x}}{x!} \, \, x=0,1,2, \ldots, \,\, \lambda>0$$
+
+
+
+
+El parámetro de la distribución Poisson es $\lambda$, que corresponde al número promedio de ocurrencias del evento aleatorio por unidad de tiempo (o espacio).
+
+$$E[X]=\lambda, ~~~~~ V(X)= \lambda$$
+
+
+## Distribución hipergeométrica
+
+
+Suponga que una población finita tiene $N$ elementos, cada uno de los cuales tiene una de dos características diferentes, en donde $K$ elementos tienen la característica de interés y $N-K$ no la tienen. Se toman al azar y sin reemplazo $n$ de estos elementos.
+
+Sea $X:$ la variable aleatoria que representa el número de elementos que tienen la característica de interés en los $n$ seleccionados.
+
+entonces:
+
+
+$$X \sim Hiper(N,K,n)$$
+
+Los valores que toma esta variable aleatoria son: $x=0,1,2,\cdots\;,\mbox{min}(n,K)$.
+
+La función masa de probabilidad está dada por:
+
+$$ p(x)=P\left(X=x\right)=\dfrac{{K \choose x}\;{N-K \choose n-x}}{{N \choose n}}\quad;\quad x=0,1,2,\cdots\;,\mbox{min}(n,K)\;.$$
+
+
+
+$$E[X]=n\frac{K}{N}, ~~~~~ V(X)=\frac{(N-n)}{(N-1)}n\frac{K}{N}\left(1-\frac{K}{N}\right)$$
+
+
+
+## Probabilidad 
+
+
+**Acumulada**
+
+
+$$F(x)=P(X \leq x) = \sum_{x'\leq x}^{} p(x'),~~~ \forall_x \in  \mathbb{R}$$
+
+
+**Puntual**
+
+
+$$p(x)=P(X=x),~~ \forall_x \in A_x$$
+
+
+**Supervivencia**
+
+
+$$1-F(x)=P(X > x) = \sum_{x'> x}^{} p(x'),~~~ \forall_x \in  \mathbb{R}$$
+
+
+## Cuantil
+
+
+Por definición, el cuantil de orden $p^*$  de una distribución de probabilidad es aquel valor de la distribución que deja a su izquierda una proporción de valores $p^*$ (o, equivalentemente, un porcentaje del ($p^*$×100)).  Esto es, el cuantil de orden $p^*$, será aquel valor $x^*$ tal que:
+
+
+$$P(X \leq x^*) = p^*$$
+
+Si la variable aleatoria $X$ no se asume continua, la hipotesis nula esta dada por:
+
+
+$$H_0: \text{El}~p^*\text{-ésimo cuantil de}~X~\text{es}~x^*~\text{(se debe especificar)}$$
+
+Que es equivalente a:
+
+
+$$H_0: P(X \leq x^*) \geq p^*~y~P(X < x^*) \leq p^*$$
