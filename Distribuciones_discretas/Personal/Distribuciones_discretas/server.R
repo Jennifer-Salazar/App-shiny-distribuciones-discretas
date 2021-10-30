@@ -21,6 +21,12 @@ shinyServer(function(input, output, session){
             # lista vacia para las etiquetas
             nombres <- rep("", length(x))
             
+            # Latex teoria
+            mostrar_dist <- paste("$$X \\sim bin(", n, ",", p, ")$$")
+            mostrar_media <- paste("$$E[X]=", round(n * p, 4), "$$")
+            mostrar_var <- paste("$$V(X)=", round(n*p*(1-p), 4), "$$")
+            mostrar_fmp <- paste("$$ p(x) = {", n,  "\\choose x}\\;", p, "^{x} \\; \\left(1- ", p, "\\right)^{", n, "-x}\\quad ;\\quad x = 0\\,,\\,1\\,,\\,2\\,,\\,\\cdots \\,,\\,", n, " \\;.$$")
+            
             if(input$Propede == "Cuantil"){
                 
                 probabilidad <- input$Probabilidad
@@ -37,15 +43,25 @@ shinyServer(function(input, output, session){
                 # Parámetros gráficos
                 ylabel <- expression(P(X<=x)) 
                 titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+                res_prop <- paste("$$q_{", probabilidad, "} =", cuantil, "$$")
                 tipo <- "Función de distribución acumulada"
                 
                 
-                output$Texto_prueba <-  renderUI({
+                output$prob_cuantiles <-  renderUI({
                     
-                    list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
-                         h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
-                    
-                    
+                    list(
+                        
+                        splitLayout(
+                            wellPanel(
+                                withMathJax(paste("$$P(X \\leq", cuantil-1, ")=" , round( prob[cuantil], 4), "$$")),  
+                            ),
+                            
+                            wellPanel(
+                                withMathJax(paste("$$P(X \\leq", cuantil, ")=" , round( prob[cuantil+1], 4), "$$"))
+                            )
+                        )
+
+                    )
                     
                 }) 
                 
@@ -56,7 +72,7 @@ shinyServer(function(input, output, session){
                 
                 cuantil <- input$Cuantil
                 
-                output$Texto_prueba <-  renderUI({
+                output$prob_cuantiles <-  renderUI({
                     
                     
                     
@@ -138,7 +154,7 @@ shinyServer(function(input, output, session){
                 tipo <- "Función de distribución acumulada"
                 
                 
-                output$Texto_prueba <-  renderUI({
+                output$prob_cuantiles <-  renderUI({
                     
                     list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
                          h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
@@ -151,7 +167,7 @@ shinyServer(function(input, output, session){
                 
                 cuantil <- input$Cuantil
                 
-                output$Texto_prueba <-  renderUI({
+                output$prob_cuantiles <-  renderUI({
                     
                     
                     
@@ -239,7 +255,7 @@ shinyServer(function(input, output, session){
                 tipo <- "Función de distribución acumulada"
                 
                 
-                output$Texto_prueba <-  renderUI({
+                output$prob_cuantiles <-  renderUI({
                     
                     list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
                          h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
@@ -252,7 +268,7 @@ shinyServer(function(input, output, session){
                 
                 cuantil <- input$Cuantil
                 
-                output$Texto_prueba <-  renderUI({
+                output$prob_cuantiles <-  renderUI({
                     
                     
                     
@@ -301,6 +317,27 @@ shinyServer(function(input, output, session){
                 }
 
             }}
+        
+        
+        # Imprimir la probabilidad calculada --------------------------------------
+        
+        output$res_probabilidad <- renderUI({
+
+            h4(withMathJax(res_prop))
+        })
+        
+        # Imprimir la teoría evaluada ---------------------------------------------
+        
+        output$res_teoria <- renderUI({
+            
+            list(
+                withMathJax(mostrar_dist),
+                withMathJax(mostrar_media),
+                withMathJax(mostrar_var),
+                withMathJax(mostrar_fmp)
+            )
+            
+        })
         
 
         # Gráficar la distribución ------------------------------------------------

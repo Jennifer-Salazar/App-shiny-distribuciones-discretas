@@ -1,17 +1,21 @@
 ---
-title: "Teoría"
-author: 
-  -"Jennifer Salazar"   
-  -"Miguel Londoño"
+title: ""
+author: ""
 date: ""
 output:
-  word_document: default
+  #word_document: default
   html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+<h1> <center> Teoría </center> </h1>
+
+
+<hr>
+
 
 ## Distribución binomial 
 
@@ -32,6 +36,8 @@ donde $n$ es el número de ensayos independientes y $p$ es la probabilidad de é
 
 $$E[X]=np, ~~~~~ V(X)=np(1-p)$$ 
 
+
+<hr>
 
 ## Distribución Poisson
 
@@ -56,6 +62,7 @@ El parámetro de la distribución Poisson es $\lambda$, que corresponde al núme
 
 $$E[X]=\lambda, ~~~~~ V(X)= \lambda$$
 
+<hr>
 
 ## Distribución hipergeométrica
 
@@ -79,7 +86,7 @@ $$ p(x)=P\left(X=x\right)=\dfrac{{K \choose x}\;{N-K \choose n-x}}{{N \choose n}
 
 $$E[X]=n\frac{K}{N}, ~~~~~ V(X)=\frac{(N-n)}{(N-1)}n\frac{K}{N}\left(1-\frac{K}{N}\right)$$
 
-
+<hr>
 
 ## Probabilidad 
 
@@ -100,7 +107,7 @@ $$p(x)=P(X=x),~~ \forall_x \in A_x$$
 
 
 $$1-F(x)=P(X > x) = \sum_{x'> x}^{} p(x'),~~~ \forall_x \in  \mathbb{R}$$
-
+<hr>
 
 ## Cuantil
 
