@@ -62,3 +62,22 @@ body {
     margin-left: -3px;
     top: 212px;
 }
+
+/* CELULAR */
+
+@media only screen and (max-width: 767px) {
+
+    .panel {
+        padding: 70px;
+        height: 610px;
+        display:list-item;
+    }
+
+    #opciones{
+        margin: 10%;
+    }
+
+    .linea_vertical {
+        height: 0px;
+    }
+}
