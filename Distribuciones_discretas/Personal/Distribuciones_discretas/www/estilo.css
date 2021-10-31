@@ -69,12 +69,13 @@ body {
 
     .panel {
         padding: 70px;
-        height: 610px;
+        height: auto;
         display:list-item;
     }
 
     #opciones{
-        margin: 10%;
+        margin: auto;
+        width: 60%;
     }
 
     .linea_vertical {
