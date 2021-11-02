@@ -38,7 +38,6 @@ body {
     height: 210px;
     margin-bottom: 10px;
     margin-top: -132px;
-    background-color: #d3faf9;
     background: linear-gradient(to left, #81b7bd, #a3d6ec);
     border: 3px solid #e3e3e3;
     border-radius: 45px;
@@ -82,9 +81,4 @@ body {
     .linea_vertical {
         height: 0px;
     }
-}
-
-@media only screen and (max-width: 979px) {
-
-
 }
