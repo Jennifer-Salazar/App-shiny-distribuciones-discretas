@@ -54,11 +54,11 @@ shinyServer(function(input, output, session){
                         
                         splitLayout(
                             wellPanel(
-                                withMathJax(paste("$$P(X \\leq", cuantil-1, ")=" , round( prob[cuantil], 4), "$$")),  
+                                withMathJax(paste("$$P(X \\leq", cuantil-1, ") =" , round( prob[cuantil], 4), "$$")),  
                             ),
                             
                             wellPanel(
-                                withMathJax(paste("$$P(X \\leq", cuantil, ")=" , round( prob[cuantil+1], 4), "$$"))
+                                withMathJax(paste("$$P(X \\leq", cuantil, ") =" , round( prob[cuantil+1], 4), "$$"))
                             )
                         )
 
@@ -91,6 +91,7 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X<=x)) 
                     titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+                    res_prop <- paste("$$P(X \\leq", cuantil, ") =", prob[cuantil + 1], "$$")
                     tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
@@ -104,7 +105,8 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
                     titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-                    tipo <- "Función de distribución de supervivencia"
+                    res_prop <- paste("$$P(X >", cuantil, ") =", prob[cuantil + 2], "$$")
+                    tipo <- "Función de supervivencia"
                     
                     
                 }else{
@@ -117,7 +119,8 @@ shinyServer(function(input, output, session){
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X==x)) 
-                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
+                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1]))
+                    res_prop <- paste("$$P(X =", cuantil, ") =", prob[cuantil + 1], "$$")
                     tipo <- "Función de masa de probabilidad"
                 }
                 
@@ -161,13 +164,25 @@ shinyServer(function(input, output, session){
                 # Parámetros gráficos
                 ylabel <- expression(P(X<=x)) 
                 titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+                res_prop <- paste("$$q_{", probabilidad, "} =", cuantil, "$$")
                 tipo <- "Función de distribución acumulada"
                 
                 
                 output$prob_cuantiles <-  renderUI({
                     
-                    list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
-                         h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
+                    list(
+                        
+                        splitLayout(
+                            wellPanel(
+                                withMathJax(paste("$$P(X \\leq", cuantil-1, ") =" , round( prob[cuantil], 4), "$$")),  
+                            ),
+                            
+                            wellPanel(
+                                withMathJax(paste("$$P(X \\leq", cuantil, ") =" , round( prob[cuantil+1], 4), "$$"))
+                            )
+                        )
+                        
+                    )
                     
                 })
                
@@ -195,6 +210,7 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X<=x)) 
                     titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+                    res_prop <- paste("$$P(X \\leq", cuantil, ") =", prob[cuantil + 1], "$$")
                     tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
@@ -209,7 +225,8 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
                     titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-                    tipo <- "Función de distribución de supervivencia"
+                    res_prop <- paste("$$P(X >", cuantil, ") =", prob[cuantil + 2], "$$")
+                    tipo <- "Función de supervivencia"
                     
                     
                 }else{
@@ -223,6 +240,7 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X==x)) 
                     titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
+                    res_prop <- paste("$$P(X =", cuantil, ") =", prob[cuantil + 1], "$$")
                     tipo <- "Función de masa de probabilidad"
                 }
                 
@@ -273,13 +291,25 @@ shinyServer(function(input, output, session){
                 # Parámetros gráficos
                 ylabel <- expression(P(X<=x)) 
                 titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+                res_prop <- paste("$$q_{", probabilidad, "} =", cuantil, "$$")
                 tipo <- "Función de distribución acumulada"
                 
                 
                 output$prob_cuantiles <-  renderUI({
                     
-                    list(h4(paste("P(X ≤", cuantil-1, ")=" , prob[cuantil], sep="")), 
-                         h4(paste("P(X ≤", cuantil, ")=" , prob[cuantil+1], sep="")))
+                    list(
+                        
+                        splitLayout(
+                            wellPanel(
+                                withMathJax(paste("$$P(X \\leq", cuantil-1, ")=" , round( prob[cuantil], 4), "$$")),  
+                            ),
+                            
+                            wellPanel(
+                                withMathJax(paste("$$P(X \\leq", cuantil, ")=" , round( prob[cuantil+1], 4), "$$"))
+                            )
+                        )
+                        
+                    )
                     
                 })
                 
@@ -307,6 +337,7 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X<=x)) 
                     titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+                    res_prop <- paste("$$P(X \\leq", cuantil, ") =", prob[cuantil + 1], "$$")
                     tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
@@ -320,7 +351,8 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
                     titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-                    tipo <- "Función de distribución de supervivencia"
+                    res_prop <- paste("$$P(X >", cuantil, ") =", prob[cuantil + 2], "$$")
+                    tipo <- "Función de supervivencia"
                     
                     
                 }else{
@@ -334,6 +366,7 @@ shinyServer(function(input, output, session){
                     # Parámetros gráficos
                     ylabel <- expression(P(X==x)) 
                     titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
+                    res_prop <- paste("$$P(X =", cuantil, ") =", prob[cuantil + 1], "$$")
                     tipo <- "Función de masa de probabilidad"
                 }
 
