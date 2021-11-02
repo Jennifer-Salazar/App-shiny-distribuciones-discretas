@@ -33,6 +33,7 @@ body {
 
 
 .panel {
+    /* height: auto; */
     padding: 20px;
     height: 210px;
     margin-bottom: 10px;
@@ -43,7 +44,7 @@ body {
     border-radius: 45px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-    display: flex;
+    display:flex;
     justify-content: flex-end;
     flex-direction: column;
 }
@@ -81,4 +82,9 @@ body {
     .linea_vertical {
         height: 0px;
     }
+}
+
+@media only screen and (max-width: 979px) {
+
+
 }
