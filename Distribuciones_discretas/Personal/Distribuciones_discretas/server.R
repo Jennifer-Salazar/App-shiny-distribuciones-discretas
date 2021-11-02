@@ -25,7 +25,8 @@ shinyServer(function(input, output, session){
             mostrar_dist <- paste("$$X \\sim bin(", n, ",", p, ")$$")
             mostrar_media <- paste("$$E[X]=", round(n * p, 4), "$$")
             mostrar_var <- paste("$$V(X)=", round(n*p*(1-p), 4), "$$")
-            mostrar_fmp <- paste("$$ p(x) = {", n,  "\\choose x}\\;", p, "^{x} \\; \\left(1- ", p, "\\right)^{", n, "-x}\\quad ;\\quad x = 0\\,,\\,1\\,,\\,2\\,,\\,\\cdots \\,,\\,", n, " \\;.$$")
+            mostrar_fmp <- paste("$$ p(x) = {", n,  "\\choose x}", p, "^{x}  \\left(1- ", p, "\\right)^{", n, "-x}$$")
+            mostrar_rango <- paste("$$x = 0\\,,\\,1\\,,\\,2\\,,\\,\\cdots \\,,\\,", n, ".$$")
             
             if(input$Propede == "Cuantil"){
                 
@@ -134,6 +135,15 @@ shinyServer(function(input, output, session){
             
             # lista vacia para las etiquetas
             nombres <- rep("", length(x))
+            
+            # Latex teoria
+            mostrar_dist <- paste("$$X \\sim Poisson(", lambda, ")$$")
+            mostrar_media <- paste("$$E[X]=", round(lambda, 4), "$$")
+            mostrar_var <- paste("$$V(X)=", round(lambda, 4), "$$")
+            mostrar_fmp <- paste("$$p(x)=\\frac{e^{-" , lambda, "}", lambda,"^{x}}{x!};$$")
+            mostrar_rango <- paste("$$x=0,1,2, \\ldots$$")
+            
+            
 
             if(input$Propede == "Cuantil"){
                 
@@ -229,11 +239,22 @@ shinyServer(function(input, output, session){
             N <- as.integer(input$N)
             n <- as.integer(input$n_hipergeometrica)
             
+            media_hiper <- n*(k/n)
+            varianza_hiper <- ((N-n)/(N-1))*n*(k/N)*(1-(k/N))
+            
             # Eje x
             x <- 0:min(n, k)
             
             # lista vacia para las etiquetas
             nombres <- rep("", length(x))
+            
+            
+            # Latex teoria
+            mostrar_dist <- paste("$$X \\sim Hiper(", N, ",", k, ",", n, ")$$")
+            mostrar_media <- paste("$$E[X]=", round(media_hiper, 4), "$$")
+            mostrar_var <- paste("$$V(X)=", round(varianza_hiper, 4), "$$")
+            mostrar_fmp <- paste("$$p(x)=\\dfrac{{" ,k,  "\\choose x}\\;{", N-k, " \\choose", n, "-x}}{{", N, "\\choose", n,"}};$$")
+            mostrar_rango <- paste("$$x=0,1,2,\\cdots\\;,", min(n,k), ".$$")
             
             if(input$Propede == "Cuantil"){
                 
@@ -334,7 +355,8 @@ shinyServer(function(input, output, session){
                 withMathJax(mostrar_dist),
                 withMathJax(mostrar_media),
                 withMathJax(mostrar_var),
-                withMathJax(mostrar_fmp)
+                withMathJax(mostrar_fmp),
+                withMathJax(mostrar_rango)
             )
             
         })
