@@ -7,7 +7,7 @@ shinyServer(function(input, output, session){
     
     #--------------------------------------------------------------
     
-    output$miplot <- renderPlot({
+    output$grafico <- renderPlot({
         
         #----------------------------- Binomial  ---------------------------------
         

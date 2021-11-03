@@ -152,7 +152,7 @@ shinyUI(fluidPage(
             tabsetPanel(type = "tabs", id = "panel_principal",
                         
                         tabPanel("Gráfica", icon = icon("chart-bar"),
-                                 plotOutput(outputId="miplot"),
+                                 plotOutput(outputId="grafico"),
                         ),
                         
                         tabPanel("Teoria", icon = icon("book"),
