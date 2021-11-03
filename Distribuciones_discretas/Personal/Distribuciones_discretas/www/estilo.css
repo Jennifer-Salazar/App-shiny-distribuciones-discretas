@@ -65,7 +65,7 @@ body {
 
 /* CELULAR */
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 768px) {
 
     .panel {
         padding: 70px;
@@ -80,5 +80,15 @@ body {
 
     .linea_vertical {
         height: 0px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1200px) {
+
+    .panel {
+        /* background: linear-gradient(to left, #d88220, #a3d6ec); */
+        display:list-item;
+        height: auto;
+        padding-top: 70px;
     }
 }

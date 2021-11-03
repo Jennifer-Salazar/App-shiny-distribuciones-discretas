@@ -42,7 +42,7 @@ shinyUI(fluidPage(
                                   
                                   column( width = 3, 
                                           numericInput(inputId="n_binomial",
-                                                       label=HTML("Ingrese el tamaño de muestra"),
+                                                       label=HTML("Ingrese el tamaño de muestra (n)"),
                                                        min = 1,
                                                        value="15",
                                                        step=1),
@@ -50,7 +50,7 @@ shinyUI(fluidPage(
                                   
                                   column( width = 3,
                                           numericInput(inputId="p",
-                                                       label=HTML("Ingrese la probabilidad de éxito"),
+                                                       label=HTML("Ingrese la probabilidad de éxito (p)"),
                                                        min=0,
                                                        max=1,
                                                        value="0.5",
@@ -63,7 +63,7 @@ shinyUI(fluidPage(
                                   
                                   column(width = 6,
                                          numericInput(inputId="lambda",
-                                                      label="Ingrese la media",
+                                                      label="Ingrese la media (λ)",
                                                       min=0,
                                                       step=1,
                                                       value="5")),

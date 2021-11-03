@@ -342,11 +342,13 @@ shinyServer(function(input, output, session){
                     
                 }else if(input$Acumulado == "supervivencia"){
                     
+                    rango <-  min(n, k)
+                    
                     # Calculo de las probabilidades
                     prob <- phyper(q = -1:(min(n, k)-1), m = k, n = N-k, k = n, lower.tail = F)
                     
                     # Valores para mostrar en la gráfica
-                    nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                    nombres[(cuantil + 2):(rango+1)] <- round(prob[(cuantil + 2):(rango+1)], 3)
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
