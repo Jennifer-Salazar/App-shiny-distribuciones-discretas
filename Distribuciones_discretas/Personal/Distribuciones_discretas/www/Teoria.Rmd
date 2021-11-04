@@ -3,8 +3,8 @@ title: ""
 author: ""
 date: ""
 output:
-  #word_document: default
   html_document: default
+  #word_document: default
 ---
 
 ```{r setup, include=FALSE, echo=FALSE}
@@ -111,18 +111,6 @@ $$1-F(x)=P(X > x) = \sum_{x'> x}^{} p(x'),~~~ \forall_x \in  \mathbb{R}$$
 
 ## Cuantil
 
+Sea $X$ una v.a discreta, definimos el cuantil $P$ de la distribucón de $X$, como el valor $q_p$ de la v.a $X$ que cumple:
 
-Por definición, el cuantil de orden $p^*$  de una distribución de probabilidad es aquel valor de la distribución que deja a su izquierda una proporción de valores $p^*$ (o, equivalentemente, un porcentaje del ($p^*$×100)).  Esto es, el cuantil de orden $p^*$, será aquel valor $x^*$ tal que:
-
-
-$$P(X \leq x^*) = p^*$$
-
-Si la variable aleatoria $X$ no se asume continua, la hipotesis nula esta dada por:
-
-
-$$H_0: \text{El}~p^*\text{-ésimo cuantil de}~X~\text{es}~x^*~\text{(se debe especificar)}$$
-
-Que es equivalente a:
-
-
-$$H_0: P(X \leq x^*) \geq p^*~y~P(X < x^*) \leq p^*$$
+$$P(X \leq q_p) \geq P ~~~~~ y ~~~~~~ P(X<q_p) \leq P$$
