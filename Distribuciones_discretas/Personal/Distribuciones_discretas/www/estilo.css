@@ -2,7 +2,6 @@
     text-align: center;
     color: #fdfdfd;
     padding: 5px 0 20px;
-    background: #2845ad;
     background: linear-gradient(to left, #1f7a85, #22b5cc);
     border-bottom: 1px solid #ddd;
     margin: 0 -15px;
@@ -62,14 +61,15 @@
 @media only screen and (max-width: 768px) {
 
     .panel {
-        padding: 70px;
+        padding-top: 70px;
         height: auto;
         display:list-item;
     }
 
     #opciones{
         margin: auto;
-        width: 60%;
+        width: 80%;
+        padding-left: 3%;
     }
 
     .linea_vertical {
@@ -79,7 +79,7 @@
 
 /* LAPTOP */
 
-@media only screen and (min-width: 769px) and (max-width: 1200px) {
+@media only screen and (min-width: 769px) and (max-width: 1400px) {
 
     .panel {
         display:flex;
