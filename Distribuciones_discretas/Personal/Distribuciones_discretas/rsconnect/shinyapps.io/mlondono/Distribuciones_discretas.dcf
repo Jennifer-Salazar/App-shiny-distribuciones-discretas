@@ -1,0 +1,13 @@
+name: Distribuciones_discretas
+title: Distribuciones_discretas
+username:
+account: mlondono
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5035003
+bundleId: 5214793
+url: https://mlondono.shinyapps.io/Distribuciones_discretas/
+when: 1636063606.55204
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Distribuciones.R|graf_ggplot_acumulada.R|graf_ggplot_otras.R|Teoria/Poster.pptx|Teoria/Poster_coloquio.pdf|Teoria/Resumen_extendido_coloquito.docx|Teoria/Teoria.docx|Teoria/Teoria.Rmd
