@@ -49,12 +49,12 @@ shinyUI(fluidPage(
                                   ),
                                   
                                   column( width = 3,
-                                          numericInput(inputId="p",
+                                          sliderInput(inputId="p",
                                                        label=HTML("Ingrese la probabilidad de éxito (p)"),
                                                        min=0,
                                                        max=1,
                                                        value="0.5",
-                                                       step=0.01) 
+                                                       step=0.005) 
                                   ),
                  ),
                  
@@ -129,9 +129,9 @@ shinyUI(fluidPage(
                  conditionalPanel(condition="input.Propede=='Cuantil'",
                                   
                                   column(width = 2,
-                                         numericInput(inputId="Probabilidad",
+                                         sliderInput(inputId="Probabilidad",
                                                       label="Ingrese probabilidad",
-                                                      value=0.70, step=0.001,
+                                                      value=0.70, step=0.005,
                                                       min=0.001, max=0.999)
                                   ),
                  ),
@@ -188,7 +188,10 @@ shinyUI(fluidPage(
                 
                 div(id = "distribucion",
                     img(src="Nacional.png", height = 56, width = 140)
-                )
+                ),
+                
+                p('Jennifer Salazar Galvis'),
+                p('Miguel Angel Londoño Ciceros')
 
             ),
             
