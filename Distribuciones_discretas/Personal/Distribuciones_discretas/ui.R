@@ -191,7 +191,9 @@ shinyUI(fluidPage(
                 ),
                 
                 p('Jennifer Salazar Galvis'),
-                p('Miguel Angel Londoño Ciceros')
+                p('Miguel Angel Londoño Ciceros'),
+                p('Mario Cesar Jaramillo Elorza'),
+                p('Carlos Mario Lopera Gomez')
 
             ),
             

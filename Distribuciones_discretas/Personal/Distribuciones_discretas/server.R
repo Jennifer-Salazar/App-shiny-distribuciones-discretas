@@ -1,13 +1,62 @@
 library(shiny)
 library(ggplot2)
 library(ggthemes)
+library(shinyvalidate)
 
 
 shinyServer(function(input, output, session){
-    
+  
+  iv_n_binomial <- InputValidator$new()
+  iv_n_binomial$add_rule("n_binomial", sv_required())
+  iv_n_binomial$add_rule("n_binomial", sv_numeric())
+  iv_n_binomial$add_rule("n_binomial", sv_integer())
+  iv_n_binomial$add_rule("n_binomial", sv_between(1, 10000000))
+  iv_n_binomial$enable()
+  
+  iv_lambda <- InputValidator$new()
+  iv_lambda$add_rule("lambda", sv_required())
+  iv_lambda$add_rule("lambda", sv_numeric())
+  iv_lambda$add_rule("lambda", sv_integer())
+  iv_lambda$add_rule("lambda", sv_between(1, 10000000))
+  iv_lambda$enable()
+  
+  iv_k <- InputValidator$new()
+  iv_k$add_rule("k", sv_required())
+  iv_k$add_rule("k", sv_numeric())
+  iv_k$add_rule("k", sv_integer())
+  iv_k$add_rule("k", sv_between(1, 10000000))
+  iv_k$enable()
+  
+  iv_N <- InputValidator$new()
+  iv_N$add_rule("N", sv_required())
+  iv_N$add_rule("N", sv_numeric())
+  iv_N$add_rule("N", sv_integer())
+  iv_N$add_rule("N", sv_between(1, 10000000))
+  iv_N$enable()
+  
+  iv_n_hiper <- InputValidator$new()
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_required())
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_numeric())
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_integer())
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_between(1, 10000000))
+  iv_n_hiper$enable()
+  
+  iv_cuantil <- InputValidator$new()
+  iv_cuantil$add_rule("Cuantil", sv_required())
+  iv_cuantil$add_rule("Cuantil", sv_numeric())
+  iv_cuantil$add_rule("Cuantil", sv_between(0, 100))
+  iv_cuantil$enable()
+
     #--------------------------------------------------------------
     
     output$grafico <- renderPlot({
+      
+      req(iv_n_binomial$is_valid())
+      req(iv_lambda$is_valid())
+      req(iv_k$is_valid())
+      req(iv_N$is_valid())
+      req(iv_n_hiper$is_valid())
+      req(iv_cuantil$is_valid())
         
         #----------------------------- Binomial  ---------------------------------
         
