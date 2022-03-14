@@ -54,7 +54,7 @@ shinyUI(fluidPage(
                                                        min=0,
                                                        max=1,
                                                        value="0.5",
-                                                       step=0.005) 
+                                                       step=0.01) 
                                   ),
                  ),
                  
@@ -131,7 +131,7 @@ shinyUI(fluidPage(
                                   column(width = 2,
                                          sliderInput(inputId="Probabilidad",
                                                       label="Ingrese probabilidad",
-                                                      value=0.70, step=0.005,
+                                                      value=0.70, step=0.01,
                                                       min=0.001, max=0.999)
                                   ),
                  ),
@@ -187,7 +187,7 @@ shinyUI(fluidPage(
     ),
     div(id = "footer",
         column( width = 8,
-              img(src="Nacional.png", height = 56, width = 140)
+                img(src="Nacional.png", height = 56, width = 140)
         ),
         p(tags$u(strong(em("Autores:")))),
         column( width = 2,
@@ -196,9 +196,9 @@ shinyUI(fluidPage(
                 p('Carlos Mario Lopera Gomez')
         ),
         column( width = 2,
-          br(),
-          p('Jennifer Salazar Galvis'),
-          p('Mario Cesar Jaramillo Elorza'),
+                br(),
+                p('Jennifer Salazar Galvis'),
+                p('Mario Cesar Jaramillo Elorza'),
         )
     )
 ))

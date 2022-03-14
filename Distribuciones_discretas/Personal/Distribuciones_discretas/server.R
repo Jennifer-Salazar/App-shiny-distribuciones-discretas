@@ -44,7 +44,7 @@ shinyServer(function(input, output, session){
   iv_cuantil <- InputValidator$new()
   iv_cuantil$add_rule("Cuantil", sv_required(message = "Campo requerido"))
   iv_cuantil$add_rule("Cuantil", sv_numeric(message = "Ingrese un valor numérico"))
-  iv_cuantil$add_rule("Cuantil", sv_between(0, 100, message = "Ingrese un número positivo"))
+  iv_cuantil$add_rule("Cuantil", sv_between(0, 100, message = "Ingrese un número entre 0 y 100"))
   iv_cuantil$enable()
   
 
