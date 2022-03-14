@@ -157,8 +157,8 @@ shinyUI(fluidPage(
                         
                         tabPanel("Teoria", icon = icon("book"),
                                  
-                                 includeHTML("www/Teoria.html")
-                                 
+                                 div(id = "header"),
+                                 includeMarkdown("www/Teoria.md"),
                         )
                         
                         
@@ -183,21 +183,22 @@ shinyUI(fluidPage(
                 uiOutput(outputId = "res_teoria")
             ),
             
-            
-            wellPanel(
-                
-                div(id = "distribucion",
-                    img(src="Nacional.png", height = 56, width = 140)
-                ),
-                
-                p('Jennifer Salazar Galvis'),
-                p('Miguel Angel Londoño Ciceros'),
-                p('Mario Cesar Jaramillo Elorza'),
-                p('Carlos Mario Lopera Gomez')
-
-            ),
-            
         )
-        
+    ),
+    div(id = "footer",
+        column( width = 8,
+              img(src="Nacional.png", height = 56, width = 140)
+        ),
+        p(tags$u(strong(em("Autores:")))),
+        column( width = 2,
+                br(),
+                p('Miguel Angel Londoño Ciceros'),
+                p('Carlos Mario Lopera Gomez')
+        ),
+        column( width = 2,
+          br(),
+          p('Jennifer Salazar Galvis'),
+          p('Mario Cesar Jaramillo Elorza'),
+        )
     )
 ))

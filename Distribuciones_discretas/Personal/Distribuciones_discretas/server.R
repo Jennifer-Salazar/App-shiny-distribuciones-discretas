@@ -7,60 +7,60 @@ library(shinyvalidate)
 shinyServer(function(input, output, session){
   
   iv_n_binomial <- InputValidator$new()
-  iv_n_binomial$add_rule("n_binomial", sv_required())
-  iv_n_binomial$add_rule("n_binomial", sv_numeric())
-  iv_n_binomial$add_rule("n_binomial", sv_integer())
-  iv_n_binomial$add_rule("n_binomial", sv_between(1, 10000000))
+  iv_n_binomial$add_rule("n_binomial", sv_required(message = "Campo requerido"),)
+  iv_n_binomial$add_rule("n_binomial", sv_numeric(message = "Ingrese un valor numérico"))
+  iv_n_binomial$add_rule("n_binomial", sv_integer(message = "Ingrese un valor entero"))
+  iv_n_binomial$add_rule("n_binomial", sv_between(1, 10000000, message = "Ingrese un entero positivo"))
   iv_n_binomial$enable()
   
   iv_lambda <- InputValidator$new()
-  iv_lambda$add_rule("lambda", sv_required())
-  iv_lambda$add_rule("lambda", sv_numeric())
-  iv_lambda$add_rule("lambda", sv_integer())
-  iv_lambda$add_rule("lambda", sv_between(1, 10000000))
+  iv_lambda$add_rule("lambda", sv_required(message = "Campo requerido"))
+  iv_lambda$add_rule("lambda", sv_numeric(message = "Ingrese un valor numérico"))
+  iv_lambda$add_rule("lambda", sv_integer(message = "Ingrese un valor entero"))
+  iv_lambda$add_rule("lambda", sv_between(1, 10000000, message = "Ingrese un entero positivo"))
   iv_lambda$enable()
   
   iv_k <- InputValidator$new()
-  iv_k$add_rule("k", sv_required())
-  iv_k$add_rule("k", sv_numeric())
-  iv_k$add_rule("k", sv_integer())
-  iv_k$add_rule("k", sv_between(1, 10000000))
+  iv_k$add_rule("k", sv_required(message = "Campo requerido"))
+  iv_k$add_rule("k", sv_numeric(message = "Ingrese un valor numérico"))
+  iv_k$add_rule("k", sv_integer(message = "Ingrese un valor entero"))
+  iv_k$add_rule("k", sv_between(1, 10000000, message = "Ingrese un entero positivo"))
   iv_k$enable()
   
   iv_N <- InputValidator$new()
-  iv_N$add_rule("N", sv_required())
-  iv_N$add_rule("N", sv_numeric())
-  iv_N$add_rule("N", sv_integer())
-  iv_N$add_rule("N", sv_between(1, 10000000))
+  iv_N$add_rule("N", sv_required(message = "Campo requerido"))
+  iv_N$add_rule("N", sv_numeric(message = "Ingrese un valor numérico"))
+  iv_N$add_rule("N", sv_integer(message = "Ingrese un valor entero"))
+  iv_N$add_rule("N", sv_between(1, 10000000, message = "Ingrese un entero positivo"))
   iv_N$enable()
   
   iv_n_hiper <- InputValidator$new()
-  iv_n_hiper$add_rule("n_hipergeometrica", sv_required())
-  iv_n_hiper$add_rule("n_hipergeometrica", sv_numeric())
-  iv_n_hiper$add_rule("n_hipergeometrica", sv_integer())
-  iv_n_hiper$add_rule("n_hipergeometrica", sv_between(1, 10000000))
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_required(message = "Campo requerido"))
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_numeric(message = "Ingrese un valor numérico"))
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_integer(message = "Ingrese un valor entero"))
+  iv_n_hiper$add_rule("n_hipergeometrica", sv_between(1, 10000000, message = "Ingrese un entero positivo"))
   iv_n_hiper$enable()
   
   iv_cuantil <- InputValidator$new()
-  iv_cuantil$add_rule("Cuantil", sv_required())
-  iv_cuantil$add_rule("Cuantil", sv_numeric())
-  iv_cuantil$add_rule("Cuantil", sv_between(0, 100))
+  iv_cuantil$add_rule("Cuantil", sv_required(message = "Campo requerido"))
+  iv_cuantil$add_rule("Cuantil", sv_numeric(message = "Ingrese un valor numérico"))
+  iv_cuantil$add_rule("Cuantil", sv_between(0, 100, message = "Ingrese un número positivo"))
   iv_cuantil$enable()
+  
 
     #--------------------------------------------------------------
     
     output$grafico <- renderPlot({
       
-      req(iv_n_binomial$is_valid())
-      req(iv_lambda$is_valid())
-      req(iv_k$is_valid())
-      req(iv_N$is_valid())
-      req(iv_n_hiper$is_valid())
       req(iv_cuantil$is_valid())
         
         #----------------------------- Binomial  ---------------------------------
         
         if(input$Distribucion == "Binomial"){
+            
+            # Evitar reacción si los inputs son invalidos   
+            req(iv_n_binomial$is_valid())
+          
             n <- input$n_binomial
             p <- input$p
             
@@ -179,6 +179,10 @@ shinyServer(function(input, output, session){
         # #----------------------------- Poisson ---------------------------------
 
         if(input$Distribucion == "Poisson"){
+            
+            # Evitar reacción si los inputs son invalidos
+            req(iv_lambda$is_valid())
+            
             lambda <- input$lambda
             n <- qpois(0.99999, lambda)
             
@@ -302,6 +306,12 @@ shinyServer(function(input, output, session){
         # #------------------------- Hipergeometrica  ---------------------------------
 
         if(input$Distribucion == "Hipergeometrica"){
+          
+            # Evitar reacción si los inputs son invalidos
+            req(iv_k$is_valid())
+            req(iv_N$is_valid())
+            req(iv_n_hiper$is_valid())
+          
             k <- as.integer(input$k)
             N <- as.integer(input$N)
             n <- as.integer(input$n_hipergeometrica)
