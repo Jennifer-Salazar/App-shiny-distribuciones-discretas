@@ -186,16 +186,26 @@ shinyUI(fluidPage(
         )
     ),
     div(id = "footer",
-        column( width = 8,
-                img(src="Nacional.png", height = 56, width = 140)
+        column( width = 1,
+                br(),
+                img(src="logo_escuela.jpeg", height = 80, width = 80),
+                #img(src="Nacional.png", height = 56, width = 140)
+        ),
+        column( width = 1,
+                br(),
+                #img(src="logo_escuela.jpeg", height = 80, width = 80),
+                img(src="Nacional.png", height = 66, width = 150)
+        ),
+        column( width = 12,
+
         ),
         p(tags$u(strong(em("Autores:")))),
-        column( width = 2,
+        column( width = 3,
                 br(),
                 p('Miguel Angel Londoño Ciceros'),
                 p('Carlos Mario Lopera Gomez')
         ),
-        column( width = 2,
+        column( width = 3,
                 br(),
                 p('Jennifer Salazar Galvis'),
                 p('Mario Cesar Jaramillo Elorza'),
