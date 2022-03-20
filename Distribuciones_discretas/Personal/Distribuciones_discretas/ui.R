@@ -1,4 +1,9 @@
 shinyUI(fluidPage(
+  
+    # Logo de la app en la web
+    tags$head(
+      tags$link(rel = "icon", type = "image/png", sizes = "32x32", href = "logo.png"),
+    ),
     
     # Se concecta con el css
     tags$link(href = "estilo.css", rel = "stylesheet"),
@@ -14,7 +19,9 @@ shinyUI(fluidPage(
             
             "Esta aplicación te ayudará a calcular probabilidades y 
             cuantiles de distribuciones de probabilidad discretas."
-        )
+        ),
+        # Titulo de la app en la web
+        titlePanel("", windowTitle = "DistDiscretas" ),
     ),
     
     

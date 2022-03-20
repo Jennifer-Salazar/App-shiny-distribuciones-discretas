@@ -4,10 +4,11 @@ username:
 account: mlondono
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 5035003
-bundleId: 5214793
+appId: 5890946
+bundleId: 5704105
 url: https://mlondono.shinyapps.io/Distribuciones_discretas/
-when: 1636063606.55204
+when: 1647744887.15648
+lastSyncTime: 1647744887.15648
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: Distribuciones.R|graf_ggplot_acumulada.R|graf_ggplot_otras.R|Teoria/Poster.pptx|Teoria/Poster_coloquio.pdf|Teoria/Resumen_extendido_coloquito.docx|Teoria/Teoria.docx|Teoria/Teoria.Rmd
+ignoredFiles: Distribuciones.R|graf_ggplot_acumulada.R|graf_ggplot_otras.R|Teoria
