@@ -322,6 +322,9 @@ shinyServer(function(input, output, session){
             
             # Eje x
             x <- 0:min(n, k)
+            minimo <- max(0, k-N+n)
+            maximo <- min(n,k)
+            #x <- minimo:maximo
             
             # lista vacia para las etiquetas
             nombres <- rep("", length(x))
@@ -332,7 +335,7 @@ shinyServer(function(input, output, session){
             mostrar_media <- paste("$$E[X]=", round(media_hiper, 4), "$$")
             mostrar_var <- paste("$$V(X)=", round(varianza_hiper, 4), "$$")
             mostrar_fmp <- paste("$$p(x)=\\dfrac{{" ,k,  "\\choose x}\\;{", N-k, " \\choose", n, "-x}}{{", N, "\\choose", n,"}};$$")
-            mostrar_rango <- paste("$$x=0,1,2,\\cdots\\;,", min(n,k), ".$$")
+            mostrar_rango <- paste("$$x=", minimo,",", minimo+1, ",", minimo + 2, ",", "\\cdots\\;,", maximo, ".$$")
             
             if(input$Propede == "Cuantil"){
                 

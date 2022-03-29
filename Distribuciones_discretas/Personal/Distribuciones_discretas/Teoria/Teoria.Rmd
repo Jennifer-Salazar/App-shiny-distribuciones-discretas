@@ -80,7 +80,7 @@ Los valores que toma esta variable aleatoria son: $x=0,1,2,\cdots\;,\mbox{min}(n
 
 La función masa de probabilidad está dada por:
 
-$$ p(x)=P\left(X=x\right)=\dfrac{{K \choose x}\;{N-K \choose n-x}}{{N \choose n}}\quad;\quad x=0,1,2,\cdots\;,\mbox{min}(n,K)\;.$$
+$$ p(x)=P\left(X=x\right)=\dfrac{{K \choose x}\;{N-K \choose n-x}}{{N \choose n}}\quad;\quad x= max(0, n+k-N),1,2,\cdots\;,\mbox{min}(n,K)\;.$$
 
 
 

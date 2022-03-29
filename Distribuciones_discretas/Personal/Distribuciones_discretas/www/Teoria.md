@@ -71,12 +71,11 @@ entonces:
 
 $$X \sim Hiper(N,K,n)$$
 
-Los valores que toma esta variable aleatoria son: $x=0,1,2,\cdots\;,\mbox{min}(n,K)$.
+Los valores que toma esta variable aleatoria son: $x=max(0, n+K-N),\cdots,\mbox{min}(n,K)$.
 
 La función masa de probabilidad está dada por:
 
-$$ p(x)=P\left(X=x\right)=\dfrac{{K \choose x}\;{N-K \choose n-x}}{{N \choose n}}\quad;\quad x=0,1,2,\cdots\;,\mbox{min}(n,K)\;.$$
-
+$$ p(x)=P\left(X=x\right)=\dfrac{{K \choose x}\;{N-K \choose n-x}}{{N \choose n}}\quad;\quad x= max(0, n+K-N),\cdots,\mbox{min}(n,K)\;.$$
 
 
 $$E[X]=n\frac{K}{N}, ~~~~~ V(X)=\frac{(N-n)}{(N-1)}n\frac{K}{N}\left(1-\frac{K}{N}\right)$$
