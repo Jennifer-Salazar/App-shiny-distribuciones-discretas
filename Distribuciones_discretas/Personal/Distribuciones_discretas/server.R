@@ -321,10 +321,10 @@ shinyServer(function(input, output, session){
             varianza_hiper <- ((N-n)/(N-1))*n*(k/N)*(1-(k/N))
             
             # Eje x
-            x <- 0:min(n, k)
+            #x <- 0:min(n, k)
             minimo <- max(0, k-N+n)
             maximo <- min(n,k)
-            #x <- minimo:maximo
+            x <- minimo:maximo
             
             # lista vacia para las etiquetas
             nombres <- rep("", length(x))
@@ -346,10 +346,12 @@ shinyServer(function(input, output, session){
                 cuantil <- qhyper(probabilidad, m = k, n = N-k, k = n)
                 
                 # Calculo de la probabilidad
-                prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
+                prob <- phyper(q = x, m = k, n = N-k, k = n)
                 
                 # Valores para mostrar en la gráfica
-                nombres[cuantil:(cuantil + 1)] <- round(prob[cuantil:(cuantil + 1)], 3)
+                #nombres[cuantil:(cuantil + 1)] <- round(prob[cuantil:(cuantil + 1)], 3)
+                nombres[(cuantil-minimo):(cuantil-minimo + 1)] <- round(prob[(cuantil-minimo):(cuantil-minimo + 1)], 3)
+                
                 
                 # Parámetros gráficos
                 ylabel <- expression(P(X<=x)) 
@@ -364,11 +366,11 @@ shinyServer(function(input, output, session){
                         
                         splitLayout(
                             wellPanel(
-                                withMathJax(paste("$$P(X \\leq", cuantil-1, ")=" , round( prob[cuantil], 4), "$$")),  
+                                withMathJax(paste("$$P(X \\leq", cuantil-1, ")=" , round( prob[cuantil-minimo], 4), "$$")),  
                             ),
                             
                             wellPanel(
-                                withMathJax(paste("$$P(X \\leq", cuantil, ")=" , round( prob[cuantil+1], 4), "$$"))
+                                withMathJax(paste("$$P(X \\leq", cuantil, ")=" , round( prob[cuantil-minimo+1], 4), "$$"))
                             )
                         )
                         
@@ -392,15 +394,15 @@ shinyServer(function(input, output, session){
                 if(input$Acumulado == "acumulada"){
                     
                     # Calculo de las probabilidades
-                    prob <- phyper(q = 0:min(n, k), m = k, n = N-k, k = n)
+                    prob <- phyper(q = x, m = k, n = N-k, k = n)
                     
                     # Valores para mostrar en la gráfica
-                    nombres[0:cuantil + 1] <- round(prob[0:cuantil + 1], 3)
+                    nombres[1:(cuantil-minimo + 1)] <- round(prob[1:(cuantil-minimo + 1)], 3)
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X<=x)) 
-                    titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
-                    res_prop <- paste("$$P(X \\leq", cuantil, ") =", round(  prob[cuantil + 1], 7 ), "$$")
+                    titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil - minimo + 1]))
+                    res_prop <- paste("$$P(X \\leq", cuantil, ") =", round(  prob[cuantil - minimo + 1], 7 ), "$$")
                     tipo <- "Función de distribución acumulada"
                     
                 }else if(input$Acumulado == "supervivencia"){
@@ -423,15 +425,15 @@ shinyServer(function(input, output, session){
                 }else{
                     
                     # Calculo de las probabilidades
-                    prob <- dhyper(x = 0:min(n, k), m = k, n = N-k, k = n)
+                    prob <- dhyper(x = x, m = k, n = N-k, k = n)
                     
                     # Valores para mostrar en la gráfica
-                    nombres[cuantil + 1] <- round(prob[cuantil + 1], 3) 
+                    nombres[cuantil - minimo + 1] <- round(prob[cuantil - minimo + 1], 3) 
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X==x)) 
-                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1])) 
-                    res_prop <- paste("$$P(X =", cuantil, ") =", round(  prob[cuantil + 1], 7 ), "$$")
+                    titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil - minimo + 1])) 
+                    res_prop <- paste("$$P(X =", cuantil, ") =", round(  prob[cuantil - minimo + 1], 7 ), "$$")
                     tipo <- "Función de masa de probabilidad"
                 }
 
