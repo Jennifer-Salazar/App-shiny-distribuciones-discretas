@@ -34,7 +34,7 @@ shinyUI(fluidPage(
         
         selectInput(inputId="Distribucion",
                     label="Elija la distribución:",
-                    choices=c("Binomial", "Poisson", "Hipergeometrica"),
+                    choices=c("Binomial", "Poisson", "Hipergeometrica", "Binomial Negativa"),
                     selected="Binomial"),
     ),
     
@@ -102,6 +102,28 @@ shinyUI(fluidPage(
                                                        value="10",
                                                        step=1)
                                   ),
+                 ),
+                 
+                 conditionalPanel(condition="input.Distribucion=='Binomial Negativa'",
+                                  
+                                  column( width = 3,
+                                          
+                                          br(),
+                                          
+                                          numericInput(inputId="r_nbin",
+                                                       label="Ingrese el número de éxitos",
+                                                       min = 1,
+                                                       value="4",
+                                                       step=1),
+                                  ),
+                                  
+                                  column( width = 3,
+                                          numericInput(inputId="p_nbin",
+                                                       label="Ingrese la probabilidad de éxito en cada ensayo",
+                                                       min=0,
+                                                       max=1,
+                                                       value="0.5",
+                                                       step=0.01) ),
                  ),
                  
                  
@@ -203,9 +225,10 @@ shinyUI(fluidPage(
                 #img(src="logo_escuela.jpeg", height = 80, width = 80),
                 img(src="Nacional.png", height = 66, width = 150)
         ),
-        column( width = 12,
-
-        ),
+        # column( width = 12,
+        # 
+        # ),
+        div(id = "autores", 
         p(tags$u(strong(em("Autores:")))),
         column( width = 3,
                 br(),
@@ -216,6 +239,7 @@ shinyUI(fluidPage(
                 br(),
                 p('Jennifer Salazar Galvis'),
                 p('Mario Cesar Jaramillo Elorza'),
+        )
         )
     )
 ))

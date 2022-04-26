@@ -68,6 +68,13 @@
     margin: 0 -15px;
 }
 
+#autores {
+    display:flex;
+    justify-content: flex-end;
+    align-items:right;
+    flex-direction: row;
+}
+
 /* CELULAR */
 
 @media only screen and (max-width: 768px) {
