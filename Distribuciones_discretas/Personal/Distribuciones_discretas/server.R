@@ -447,14 +447,117 @@ shinyServer(function(input, output, session){
         r <- input$r_nbin
         p <- input$p_nbin
         
+        n <- qnbinom(0.99999, r, p)
+        
+        # Eje x
+        x <- 0:n
+        
+        # lista vacia para las etiquetas
+        nombres <- rep("", length(x))
+        
         # Latex teoria
         mostrar_dist <- paste("$$X \\sim BN(", r, ",", p, ")$$")
-        mostrar_media <- paste("$$E[X]=", round(r*(1-p)/p, 4), "$$")
-        mostrar_var <- paste("$$V(X)=", round(r*(1-p)/p^2, 4), "$$")
-        mostrar_fmp <- paste("$$ p(x) = {", r, "+ x - 1", "\\choose x}", p, "^{", r, "}",  "\\left(1- ", p, "\\right)^{x}$$")
+        mostrar_media <- paste("$$E[X]=", round(r*p/(1-p), 4), "$$")
+        mostrar_var <- paste("$$V(X)=", round(r*p/(1-p)^2, 4), "$$")
+        mostrar_fmp <- paste("$$ p(x) = {", r, "+ x - 1", "\\choose r - 1}", p, "^{", r, "}",  "\\left(1- ", p, "\\right)^{x}$$")
         mostrar_rango <- paste("$$x = 0\\,,\\,1\\,,\\,2\\,,\\,\\cdots \\,,\\,", "$$")
         
-        
+        if(input$Propede == "Cuantil"){
+          
+          probabilidad <- input$Probabilidad
+          
+          # Calculo del cuantil
+          cuantil <- qnbinom(p, r, probabilidad)
+          
+          # Calculo de la probabilidad
+          prob <- pnbinom(x, size=r, prob=p)
+          
+          # Valores para mostrar en la gráfica
+          nombres[cuantil:(cuantil + 1)] <- round(prob[cuantil:(cuantil + 1)], 3)
+          
+          # Parámetros gráficos
+          ylabel <- expression(P(X<=x)) 
+          titulo <- bquote(q[.(probabilidad)]==.(cuantil))
+          res_prop <- paste("$$q_{", probabilidad, "} =", cuantil, "$$")
+          tipo <- "Función de distribución acumulada"
+          
+          
+          output$prob_cuantiles <-  renderUI({
+            
+            list(
+              
+              splitLayout(
+                wellPanel(
+                  withMathJax(paste("$$P(X \\leq", cuantil-1, ") =" , round( prob[cuantil], 4), "$$")),  
+                ),
+                
+                wellPanel(
+                  withMathJax(paste("$$P(X \\leq", cuantil, ") =" , round( prob[cuantil+1], 4), "$$"))
+                )
+              )
+              
+            )
+            
+          }) 
+          
+          
+        }        
+        else {
+          
+          cuantil <- input$Cuantil
+          
+          output$prob_cuantiles <-  renderUI({
+            
+            
+            
+          }) 
+          
+          
+          if(input$Acumulado == "acumulada"){
+            
+            # Calculo de la probabilidad
+            prob <- pnbinom(x, size=r, prob=p)
+            
+            # Valores para mostrar en la gráfica
+            nombres[0:cuantil + 1] <- round(prob[0:cuantil + 1], 3)
+            
+            # Parámetros gráficos
+            ylabel <- expression(P(X<=x)) 
+            titulo <- bquote(P(X <= .(cuantil))==.(prob[cuantil + 1]))
+            res_prop <- paste("$$P(X \\leq", cuantil, ") =", round(  prob[cuantil + 1], 7), "$$")
+            tipo <- "Función de distribución acumulada"
+            
+          }else if(input$Acumulado == "supervivencia"){
+            
+            # Calculo de las probabilidades
+            prob <- pnbinom(-1:(n-1), size=r, prob=p, lower.tail = F)
+            
+            # Valores para mostrar en la gráfica
+            nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+            
+            # Parámetros gráficos
+            ylabel <- expression(P(X>x))
+            titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
+            res_prop <- paste("$$P(X >", cuantil, ") =", round(  prob[cuantil + 2], 7 ), "$$")
+            tipo <- "Función de supervivencia"
+            
+            
+          }else{
+            
+            # Calculo de las probabilidades
+            prob <- dnbinom(x, size=r, prob=p)
+            
+            # Valores para mostrar en la gráfica
+            nombres[cuantil + 1] <- round(prob[cuantil + 1], 3) 
+            
+            # Parámetros gráficos
+            ylabel <- expression(P(X==x)) 
+            titulo <- bquote(P(X == .(cuantil))==.(prob[cuantil + 1]))
+            res_prop <- paste("$$P(X =", cuantil, ") =", round(  prob[cuantil + 1], 7 ), "$$")
+            tipo <- "Función de masa de probabilidad"
+          }
+        }
+          
         # if(input$Propede == "Cuantil"){
         #   
         #   probabilidad <- input$Probabilidad
