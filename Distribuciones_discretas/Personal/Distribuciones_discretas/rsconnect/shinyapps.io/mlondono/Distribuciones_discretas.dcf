@@ -5,10 +5,10 @@ account: mlondono
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5890946
-bundleId: 5704105
+bundleId: 5908951
 url: https://mlondono.shinyapps.io/Distribuciones_discretas/
-when: 1647744887.15648
-lastSyncTime: 1647744887.15648
+when: 1652657661.43134
+lastSyncTime: 1652657661.43134
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: Distribuciones.R|graf_ggplot_acumulada.R|graf_ggplot_otras.R|Teoria

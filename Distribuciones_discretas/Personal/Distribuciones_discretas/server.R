@@ -311,7 +311,7 @@ shinyServer(function(input, output, session){
         iv_cuantil$add_rule(
           "Cuantil",
           sv_between(min(x), 10000000, 
-                     message = paste("Ingrese un número entre", min(x), "y", max(x))
+                     message = paste("Ingrese un número mayor a", min(x))
           )
         )
         iv_cuantil$enable()
@@ -640,7 +640,7 @@ shinyServer(function(input, output, session){
         iv_cuantil$add_rule(
           "Cuantil",
           sv_between(min(x), 10000000, 
-                     message = paste("Ingrese un número entre", min(x), "y", max(x))
+                     message = paste("Ingrese un número mayor a", min(x))
           )
         )
         iv_cuantil$enable()
