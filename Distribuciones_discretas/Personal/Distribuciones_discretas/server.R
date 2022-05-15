@@ -149,13 +149,20 @@ shinyServer(function(input, output, session){
                     # Calculo de las probabilidades
                     prob <- pbinom(-1:(n-1), size=n, prob=p, lower.tail = F)
                     
-                    # Valores para mostrar en la gráfica
-                    nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                    if(cuantil == n){
+                      prob_cuantil <- 0
+                    }else{
+                      # Valores para mostrar en la gráfica
+                      nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                      prob_cuantil <- prob[cuantil + 2]
+                    }
+                    
+                    
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
-                    titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-                    res_prop <- paste("$$P(X >", cuantil, ") =", round(  prob[cuantil + 2], 7 ), "$$")
+                    titulo <- bquote(P(X > .(cuantil))==.(prob_cuantil))
+                    res_prop <- paste("$$P(X >", cuantil, ") =", round(prob_cuantil, 7 ), "$$")
                     tipo <- "Función de supervivencia"
                     
                     
@@ -273,13 +280,20 @@ shinyServer(function(input, output, session){
                     # Calculo de las probabilidades
                     prob <- ppois(-1:(n-1), lambda=lambda, lower.tail = F)
                     
-                    # Valores para mostrar en la gráfica
-                    nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                    if(cuantil == n){
+                      prob_cuantil <- 0
+                    }else{
+                      # Valores para mostrar en la gráfica
+                      nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+                      prob_cuantil <- prob[cuantil + 2]
+                    }
+                    
+                    
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
-                    titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-                    res_prop <- paste("$$P(X >", cuantil, ") =", round(  prob[cuantil + 2], 7 ), "$$")
+                    titulo <- bquote(P(X > .(cuantil))==.(prob_cuantil))
+                    res_prop <- paste("$$P(X >", cuantil, ") =", round(prob_cuantil, 7 ), "$$")
                     tipo <- "Función de supervivencia"
                     
                     
@@ -407,19 +421,26 @@ shinyServer(function(input, output, session){
                     
                 }else if(input$Acumulado == "supervivencia"){
                     
-                    rango <-  min(n, k)
                     
                     # Calculo de las probabilidades
-                    prob <- phyper(q = -1:(min(n, k)-1), m = k, n = N-k, k = n, lower.tail = F)
+                    prob <- phyper(q = (minimo-1):(maximo-1), m = k, n = N-k, k = n, lower.tail = F)
                     
-                    # Valores para mostrar en la gráfica
-                    nombres[(cuantil + 2):(rango+1)] <- round(prob[(cuantil + 2):(rango+1)], 3)
+                    if(cuantil == maximo){
+                      prob_cuantil <- 0
+                    }else{
+                      # Valores para mostrar en la gráfica
+                      nombres[(cuantil):(maximo-1)] <- round(prob[(cuantil):(maximo-1)], 3)
+                      prob_cuantil <- prob[cuantil]
+                      
+                    }
+                    
                     
                     # Parámetros gráficos
                     ylabel <- expression(P(X>x))
-                    titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-                    res_prop <- paste("$$P(X >", cuantil, ") =", round(  prob[cuantil + 2], 7 ), "$$")
+                    titulo <- bquote(P(X > .(cuantil))==.(prob_cuantil))
+                    res_prop <- paste("$$P(X >", cuantil, ") =", round(prob_cuantil, 7 ), "$$")
                     tipo <- "Función de supervivencia"
+                    
                     
                     
                 }else{
@@ -529,16 +550,23 @@ shinyServer(function(input, output, session){
             
           }else if(input$Acumulado == "supervivencia"){
             
+            
             # Calculo de las probabilidades
             prob <- pnbinom(-1:(n-1), size=r, prob=p, lower.tail = F)
             
-            # Valores para mostrar en la gráfica
-            nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+            if(cuantil == n){
+              prob_cuantil <- 0
+            }else{
+              # Valores para mostrar en la gráfica
+              nombres[(cuantil + 2):(n+1)] <- round(prob[(cuantil + 2):(n+1)], 3)
+              prob_cuantil <- prob[cuantil + 2]
+            }
+            
             
             # Parámetros gráficos
             ylabel <- expression(P(X>x))
-            titulo <- bquote(P(X > .(cuantil))==.(prob[cuantil + 2]))
-            res_prop <- paste("$$P(X >", cuantil, ") =", round(  prob[cuantil + 2], 7 ), "$$")
+            titulo <- bquote(P(X > .(cuantil))==.(prob_cuantil))
+            res_prop <- paste("$$P(X >", cuantil, ") =", round(prob_cuantil, 7 ), "$$")
             tipo <- "Función de supervivencia"
             
             
@@ -558,61 +586,6 @@ shinyServer(function(input, output, session){
           }
         }
           
-        # if(input$Propede == "Cuantil"){
-        #   
-        #   probabilidad <- input$Probabilidad
-        #   
-        #   # k <- 5  # numero de desviaciones
-        #   # curve(dnorm(x, media, desvi), xlim=media+c(-k,k)*desvi, lwd=3,
-        #   #       main='Distribución normal', ylab="", xlab="", axes=FALSE)
-        #   # axis(1, at=seq(media-k*desvi, media+k*desvi, desvi), pos=0)
-        #   # axis(2, las=1)
-        #   # secuencia <- seq(media-k*desvi, percentil, length.out=10000)
-        #   # cord.x <- c(media-k*desvi, secuencia, percentil)
-        #   # cord.y <- c(0, dnorm(secuencia, media, desvi), 0)
-        #   # polygon(cord.x, cord.y, col='steelblue')
-        #   # shadowtext(x=percentil, y=0, round(percentil, 2), col="chartreuse", cex=2)
-        #   # title(sub=bquote(P(X<.(percentil))==.(proba)), cex.sub=2)
-        #   
-        # }
-        # 
-        # else {
-        #   
-        #   cuantil <- input$Cuantil
-        #   
-        #   
-        #   if(input$Acumulado == "acumulada"){
-        #     
-        #     
-        #     probabilidad <- pnbinom(cuantil-r, r, p)
-        #     prob <- pnbinom(0:(cuantil-r), r, p)
-        #     barplot(prob, ylim=c(0, 1), names.arg=r:cuantil,
-        #             xlab=" ", ylab=expression(P(X<=x)), col="#D95914", las=1)
-        #     grid()
-        #     
-        #     title(sub=bquote(P(X <= .(cuantil))==.(probabilidad)), cex.sub=2)
-        #     
-        #   }else if(input$Acumulado == "supervivencia"){
-        #     
-        #     
-        #     
-        #     
-        #   }else{
-        #     
-        #     colores <- rep("cyan4", cuantil-r+1)
-        #     colores[cuantil- r + 1] <- "#D95914"
-        #     
-        #     probabilidad <- dnbinom(cuantil-r, r, p)
-        #     
-        #     prob <- dnbinom(x=0:(cuantil-r), size=r, prob=p)
-        #     barplot(prob, ylim=c(0, 1), names.arg=r:cuantil,
-        #             xlab=" ", ylab=expression(P(X==x)), col=colores, las=1)
-        #     grid()
-        #     title(sub=bquote(P(X == .(cuantil))==.(probabilidad)), cex.sub=2)
-        #   }
-        #   
-        #   
-        #  }
       }
       
       
@@ -656,7 +629,7 @@ shinyServer(function(input, output, session){
             name = nombres
         )
 
-        ggplot(df, aes(x=x, y=y, fill = ifelse(name == "", 1, 0) )) +
+        ggplot(df, aes(x=x, y=y, fill = ifelse(name == "", "o", "p") )) +
             geom_bar(stat = "identity", color="black", show.legend = FALSE) +
             geom_text(aes(label=name), vjust=-0.3, size=3.5) + #, fill = "white") +
             labs(
