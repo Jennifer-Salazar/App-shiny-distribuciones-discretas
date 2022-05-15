@@ -94,6 +94,26 @@
     .linea_vertical {
         height: 0px;
     }
+
+    #footer {
+        display:flex;
+        flex-flow: column wrap;
+        align-items:center;
+        background: linear-gradient(to left, #1f7a85, #22b5cc);
+        font-size: 15px;
+        color: #fdfdfd;
+        border-bottom: 1px solid #ddd;
+        margin: 0 -15px;
+    }
+
+    #autores {
+        display:flex;
+        justify-content: flex-end;
+        flex-direction: right;
+        margin-top: 50px;
+        margin-left: 10px;
+    }
+
 }
 
 /* LAPTOP */

@@ -56,7 +56,7 @@ shinyUI(fluidPage(
                                   ),
                                   
                                   column( width = 3,
-                                          sliderInput(inputId="p",
+                                          numericInput(inputId="p",
                                                        label=HTML("Ingrese la probabilidad de éxito (p)"),
                                                        min=0,
                                                        max=1,
@@ -150,6 +150,7 @@ shinyUI(fluidPage(
                                   column(width = 2,
                                          numericInput(inputId="Cuantil",
                                                       label="Ingrese cuantil",
+                                                      min = 0,
                                                       value=5, step=1)
                                   ),
                  ),
